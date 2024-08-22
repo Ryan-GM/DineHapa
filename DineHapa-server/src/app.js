@@ -4,6 +4,7 @@ const MongoStore = require('connect-mongo');
 const userRoutes = require('./routes/userRoutes');
 const restaurantRoutes = require('./routes/restaurantRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const menuRoutes = require('./routes/menuRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -26,5 +27,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 // Order routes
 app.use('/api/orders', orderRoutes);
+// Menu routes
+app.use('/api/menus', menuRoutes);
 
 module.exports = app;
