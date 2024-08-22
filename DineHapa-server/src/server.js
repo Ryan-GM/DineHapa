@@ -1,27 +1,16 @@
-const express = require('express');
 const mongoose = require('mongoose');
 
-const config = require('./config/config');
-const cors = require('cors');
-const app = express();
+require('dotenv').config();
+
+const app = require('./app');
 
 
+// Database connection
+const connectDB = require('./config/database');
+connectDB();
 
-mongoose.connect(config.mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error(err));
-app.use(express.json());
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
-
-const orderRoutes = require('../routes/orderRoutes'); 
-// Use the order routes
-app.use('/orders',orderRoutes);
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
