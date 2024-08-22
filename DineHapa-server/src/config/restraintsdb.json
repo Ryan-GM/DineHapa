@@ -1,0 +1,43 @@
+
+[
+    {
+      "name": "Sunrise Diner",
+      "description": "A cozy spot serving breakfast and brunch with locally sourced ingredients.",
+      "address": "123 Main St",
+      "city": "Springfield",
+      "ownerId": "64d9f1f3d2f6d8b1a32e68f1", 
+      "location": {
+        "type": "Point",
+        "coordinates": [-74.0059731, 40.7127753] 
+      },
+      "menuItems": ["64d9f1f3d2f6d8b1a32e68f3", "64d9f1f3d2f6d8b1a32e68f4"]
+      
+    },
+    {
+      "name": "Ocean Breeze",
+      "description": "Seafood restaurant offering fresh catches and ocean views.",
+      "address": "456 Ocean Ave",
+      "city": "Coastal City",
+      "ownerId": "64d9f1f3d2f6d8b1a32e68f2",
+      "location": {
+        "type": "Point",
+        "coordinates": [-118.2436849, 34.0522342]  
+      },
+      "menuItems": ["64d9f1f3d2f6d8b1a32e68f5", "64d9f1f3d2f6d8b1a32e68f6"]
+      
+    },
+    {
+      "name": "Urban Eats",
+      "description": "Trendy spot offering gourmet sandwiches and craft coffee.",
+      "address": "789 City Plaza",
+      "city": "Metropolis",
+      "ownerId": "64d9f1f3d2f6d8b1a32e68f3",
+      "location": {
+        "type": "Point",
+        "coordinates": [-87.6297982, 41.8781136] 
+      },
+      "menuItems": ["64d9f1f3d2f6d8b1a32e68f7", "64d9f1f3d2f6d8b1a32e68f8"],
+      "createdAt": "2024-08-21T14:56:56.789Z",
+      "updatedAt": "2024-08-21T14:56:56.789Z"
+    }
+  ]
