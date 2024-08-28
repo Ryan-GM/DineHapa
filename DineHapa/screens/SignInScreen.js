@@ -7,7 +7,7 @@ const SignInScreen = ({ route, navigation }) => {
   useEffect(() => {
     // Simulate fetching the user's name
     const fetchUserName = async () => {
-      // Replace with your actual logic to get the user's name
+      // logic to get the user's name
       const name = await fetchUserNameFromStorage();
       setUserName(name);
     };
@@ -16,9 +16,8 @@ const SignInScreen = ({ route, navigation }) => {
   }, []);
 
   const fetchUserNameFromStorage = async () => {
-    // Replace with your actual logic to retrieve user data (e.g., AsyncStorage or API)
-    // Here, I'm hardcoding it for demonstration purposes
-    return 'Jos'; // Assume this is the name retrieved
+    //  logic to retrieve user data API
+    return 'Jos'; 
   };
 
   return (
