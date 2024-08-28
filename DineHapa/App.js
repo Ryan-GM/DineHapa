@@ -5,7 +5,7 @@ import CarouselScreen from './screens/CarouselScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import HomeScreen from './screens/HomeScreen';
-
+import RestaurantDetailScreen from './screens/RestaurantDetailScreen';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -32,6 +32,12 @@ const App = () => {
           component={HomeScreen} 
           options={{ headerShown: false }} 
         />
+        <Stack.Screen 
+          name="RestaurantDetailScreen" 
+          component={RestaurantDetailScreen} 
+          options={{ headerShown: false }} 
+        />
+        
       </Stack.Navigator>
 
     </NavigationContainer>

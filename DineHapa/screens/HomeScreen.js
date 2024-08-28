@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, Modal,SafeAreaView } from 'react-native';
-// import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, Modal, SafeAreaView } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
 // Mock data
 const allRestaurants = [
@@ -16,8 +16,8 @@ const categories = ['All', 'Sandwich', 'Pizza', 'Burgers', 'Chinese', 'Mexican',
 const cuisines = ['All', 'American', 'Mexican', 'Italian', 'Chinese'];
 const priceRanges = ['All', '$', '$$', '$$$', '$$$$'];
 
-const RestaurantCard = ({ name, rating, distance, shipping, category, price, cuisine }) => (
-  <TouchableOpacity style={styles.card}>
+const RestaurantCard = ({ name, rating, distance, shipping, category, price, cuisine, navigation }) => (
+  <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('RestaurantDetailScreen')}>
     <Image source={{ uri: 'https://via.placeholder.com/50' }} style={styles.restaurantImage} />
     <View style={styles.cardContent}>
       <Text style={styles.restaurantName}>{name}</Text>
@@ -41,6 +41,8 @@ const HomeScreen = () => {
   const [restaurants, setRestaurants] = useState(allRestaurants);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', options: [], currentValue: '', onSelect: null });
+
+  const navigation = useNavigation(); // Access the navigation prop
 
   useEffect(() => {
     filterRestaurants();
@@ -141,7 +143,7 @@ const HomeScreen = () => {
         <Text style={styles.sectionTitle}>Featured Restaurants</Text>
         <FlatList
           data={restaurants.slice(0, 3)}
-          renderItem={({ item }) => <RestaurantCard {...item} />}
+          renderItem={({ item }) => <RestaurantCard {...item} navigation={navigation} />} // Pass navigation prop
           keyExtractor={(item) => item.id}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -149,7 +151,7 @@ const HomeScreen = () => {
 
         <Text style={styles.sectionTitle}>Nearby Restaurants</Text>
         {restaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.id} {...restaurant} />
+          <RestaurantCard key={restaurant.id} {...restaurant} navigation={navigation} /> // Pass navigation prop
         ))}
 
         <TouchableOpacity style={styles.ctaButton}>
@@ -217,50 +219,55 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 15,
     marginBottom: 10,
+    backgroundColor: '#f8f8f8',
   },
   dropdownContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   dropdownButton: {
-    padding: 10,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
     flex: 1,
-    marginHorizontal: 5,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    margin: 15,
+    marginRight: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderColor: '#e0e0e0',
+    borderWidth: 1,
+    borderRadius: 20,
+    backgroundColor: '#fff',
   },
   categoryContainer: {
-    paddingLeft: 15,
+    padding: 15,
+    backgroundColor: '#fff',
   },
   categoryItem: {
-    padding: 10,
-    backgroundColor: '#fff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 20,
     marginRight: 10,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
+    backgroundColor: '#f8f8f8',
   },
   selectedCategory: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ff6347',
   },
   categoryText: {
-    color: '#000',
+    fontSize: 16,
   },
   selectedCategoryText: {
     color: '#fff',
+    fontWeight: 'bold',
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    padding: 15,
+    backgroundColor: '#fff',
   },
   card: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    marginHorizontal: 15,
-    marginBottom: 15,
-    borderRadius: 10,
     padding: 15,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
   },
   restaurantImage: {
     width: 50,
@@ -269,72 +276,59 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   cardContent: {
-    flex: 1,
+    justifyContent: 'center',
   },
   restaurantName: {
-    fontWeight: 'bold',
     fontSize: 16,
+    fontWeight: 'bold',
   },
   ctaButton: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 10,
     margin: 15,
+    paddingVertical: 15,
+    backgroundColor: '#ff6347',
+    borderRadius: 25,
     alignItems: 'center',
   },
   ctaButtonText: {
     color: '#fff',
+    fontSize: 16,
     fontWeight: 'bold',
   },
   modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
   },
   modalTitle: {
-    marginBottom: 15,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 18
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
   modalOption: {
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
-    width: '100%',
-    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    marginBottom: 10,
   },
   selectedModalOption: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ff6347',
   },
   modalOptionText: {
-    color: '#000',
+    fontSize: 16,
   },
   selectedModalOptionText: {
     color: '#fff',
   },
   closeButton: {
-    backgroundColor: "#2196F3",
-    borderRadius: 20,
+    marginTop: 20,
     padding: 10,
-    elevation: 2,
-    marginTop: 15,
+    backgroundColor: '#ff6347',
+    borderRadius: 20,
   },
   closeButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
+    color: '#fff',
   },
 });
 
