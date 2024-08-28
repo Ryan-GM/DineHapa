@@ -1,52 +1,20 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
-
-const { width } = Dimensions.get('window');
-
-const entries = [
-  {
-    title: 'Diverse & sparkling food.',
-    text: 'We use the best local ingredients to create fresh and delicious food and drinks.',
-    image: require('../assets/food.png'), 
-  },
-  {
-    title: 'Free shipping on all orders',
-    text: 'Free shipping on the primary order whilst the usage of CaPay fee method.',
-    image: require('../assets/shipping.jpg'), 
-  },
-  {
-    title: '+24K Restaurants',
-    text: 'Easily find your favorite food and have it delivered in record time.',
-    image: require('../assets/restaurants.png'), 
-  }
-];
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 const CarouselScreen = ({ navigation }) => {
-  const renderItem = ({ item }) => (
-    <View style={styles.slide}>
-      <Image source={item.image} style={styles.image} />
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.text}>{item.text}</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('SignInScreen')}>
-        <Text style={styles.buttonText}>Get started</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
-      <Carousel
-        data={entries}
-        renderItem={renderItem}
-        sliderWidth={width}
-        itemWidth={width - 60}
-        loop={true}
-        autoplay={true}
-        autoplayInterval={3000}
-      />
+      <Image source={require('../assets/restaurants.png')} style={styles.image} />
+      <Text style={styles.title}>+24K Restaurants</Text>
+      <Text style={styles.text}>
+        Easily order your favorite food from the comfort of your home and have it delivered in record time
+      </Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() =>
+          navigation.navigate('SignInScreen')}>
+        <Text style={styles.buttonText}>Get started</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -57,14 +25,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-  },
-  slide: {
-    backgroundColor: 'white',
-    borderRadius: 8,
-    height: '100%',
-    padding: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
   },
   image: {
     width: 200,
@@ -72,8 +33,8 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   title: {
-    fontSize: 22,
-    fontWeight: '600',
+    fontSize: 24,
+    fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
   },
@@ -85,9 +46,9 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#f5a623',
-    paddingVertical: 10,
+    paddingVertical: 12,
     paddingHorizontal: 30,
-    borderRadius: 5,
+    borderRadius: 8,
   },
   buttonText: {
     fontSize: 18,
