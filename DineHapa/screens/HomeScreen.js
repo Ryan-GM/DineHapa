@@ -16,13 +16,16 @@ const categories = ['All', 'Sandwich', 'Pizza', 'Burgers', 'Chinese', 'Mexican',
 const cuisines = ['All', 'American', 'Mexican', 'Italian', 'Chinese'];
 const priceRanges = ['All', '$', '$$', '$$$', '$$$$'];
 
-const RestaurantCard = ({ name, rating, distance, shipping, category, price, cuisine, navigation }) => (
-  <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('RestaurantDetailScreen')}>
+const RestaurantCard = ({ restaurant, navigation }) => (
+  <TouchableOpacity 
+    style={styles.card} 
+    onPress={() => navigation.navigate('RestaurantDetailScreen', { restaurantId: restaurant.id, allRestaurants })}
+  >
     <Image source={{ uri: 'https://via.placeholder.com/50' }} style={styles.restaurantImage} />
     <View style={styles.cardContent}>
-      <Text style={styles.restaurantName}>{name}</Text>
-      <Text>{category} • {cuisine} • {price}</Text>
-      <Text>{rating} ⭐️ • {distance} km • {shipping}</Text>
+      <Text style={styles.restaurantName}>{restaurant.name}</Text>
+      <Text>{restaurant.category} • {restaurant.cuisine} • {restaurant.price}</Text>
+      <Text>{restaurant.rating} ⭐️ • {restaurant.distance} km • {restaurant.shipping}</Text>
     </View>
   </TouchableOpacity>
 );
@@ -143,7 +146,7 @@ const HomeScreen = () => {
         <Text style={styles.sectionTitle}>Featured Restaurants</Text>
         <FlatList
           data={restaurants.slice(0, 3)}
-          renderItem={({ item }) => <RestaurantCard {...item} navigation={navigation} />} // Pass navigation prop
+          renderItem={({ item }) => <RestaurantCard restaurant={item} navigation={navigation} />}
           keyExtractor={(item) => item.id}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -151,7 +154,7 @@ const HomeScreen = () => {
 
         <Text style={styles.sectionTitle}>Nearby Restaurants</Text>
         {restaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.id} {...restaurant} navigation={navigation} /> // Pass navigation prop
+          <RestaurantCard key={restaurant.id} restaurant={restaurant} navigation={navigation} />
         ))}
 
         <TouchableOpacity style={styles.ctaButton}>

@@ -1,53 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
+import { allRestaurants } from './HomeScreen'; // Adjust the import path as needed
 
-const restaurantDetails = {
-  id: '1',
-  name: 'Subway',
-  logo: 'https://via.placeholder.com/100',
-  rating: 4.5,
-  address: '123 Main St, City, Country',
-  phone: '(123) 456-7890',
-  hours: 'Mon-Fri: 9 AM - 10 PM, Sat-Sun: 10 AM - 11 PM',
-  cuisine: 'American',
-  tags: ['Family-Friendly', 'Vegan Options'],
-  menuCategories: [
-    { id: '1', name: 'Appetizers' },
-    { id: '2', name: 'Main Courses' },
-    { id: '3', name: 'Desserts' },
-    { id: '4', name: 'Drinks' },
-  ],
-  dishes: [
-    { id: '1', name: 'Classic Sandwich', description: 'A tasty classic.', price: '$5.99', image: 'https://via.placeholder.com/100', addOns: 'Cheese, Extra Meat' },
-    { id: '2', name: 'Veggie Delight', description: 'Fresh and healthy.', price: '$4.99', image: 'https://via.placeholder.com/100', addOns: 'Avocado, Extra Veggies' },
-  ],
-  reviews: [
-    { id: '1', user: 'John Doe', rating: 5, avatar: 'https://via.placeholder.com/50', comment: 'Great food!' },
-    { id: '2', user: 'Jane Smith', rating: 4, avatar: 'https://via.placeholder.com/50', comment: 'Good service.' },
-  ],
-};
+const RestaurantDetailScreen = ({ route }) => {
+  const { restaurantId, allRestaurants } = route.params;
+  const restaurant = allRestaurants.find(r => r.id === restaurantId);
 
-const RestaurantDetailScreen = () => {
+  if (!restaurant) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text>Restaurant not found</Text>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         {/* Restaurant Info */}
         <View style={styles.restaurantInfo}>
-          <Image source={{ uri: restaurantDetails.logo }} style={styles.restaurantLogo} />
+          <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.restaurantLogo} />
           <View style={styles.restaurantDetails}>
-            <Text style={styles.restaurantName}>{restaurantDetails.name}</Text>
-            <Text style={styles.restaurantRating}>{restaurantDetails.rating} ⭐️</Text>
-            <Text style={styles.restaurantAddress}>{restaurantDetails.address}</Text>
-            <Text style={styles.restaurantPhone}>{restaurantDetails.phone}</Text>
-            <Text style={styles.restaurantHours}>{restaurantDetails.hours}</Text>
-            <Text style={styles.restaurantCuisine}>{restaurantDetails.cuisine}</Text>
+            <Text style={styles.restaurantName}>{restaurant.name}</Text>
+            <Text style={styles.restaurantRating}>{restaurant.rating} ⭐️</Text>
+            <Text style={styles.restaurantAddress}>{restaurant.distance} km away</Text>
+            <Text style={styles.restaurantPhone}>{restaurant.shipping}</Text>
+            <Text style={styles.restaurantCuisine}>{restaurant.cuisine}</Text>
             <View style={styles.tagsContainer}>
-              {restaurantDetails.tags.map((tag, index) => (
-                <Text key={index} style={styles.tag}>
-                  {tag}
-                </Text>
-              ))}
+              <Text style={styles.tag}>{restaurant.category}</Text>
+              <Text style={styles.tag}>{restaurant.price}</Text>
             </View>
           </View>
         </View>
@@ -57,39 +40,39 @@ const RestaurantDetailScreen = () => {
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={restaurantDetails.menuCategories}
+          data={['Appetizers', 'Main Courses', 'Desserts', 'Drinks']}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.categoryItem}>
-              <Text style={styles.categoryText}>{item.name}</Text>
+              <Text style={styles.categoryText}>{item}</Text>
             </TouchableOpacity>
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item}
           contentContainerStyle={styles.categoryContainer}
         />
 
         {/* Dish Details */}
-        <Text style={styles.sectionTitle}>Dishes</Text>
-        {restaurantDetails.dishes.map((dish) => (
-          <View key={dish.id} style={styles.dishCard}>
-            <Image source={{ uri: dish.image }} style={styles.dishImage} />
+        <Text style={styles.sectionTitle}>Popular Dishes</Text>
+        {['Dish 1', 'Dish 2'].map((dish, index) => (
+          <View key={index} style={styles.dishCard}>
+            <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.dishImage} />
             <View style={styles.dishContent}>
-              <Text style={styles.dishName}>{dish.name}</Text>
-              <Text>{dish.description}</Text>
-              <Text style={styles.dishPrice}>{dish.price}</Text>
-              <Text style={styles.dishAddOns}>{dish.addOns}</Text>
+              <Text style={styles.dishName}>{dish}</Text>
+              <Text>Description of {dish}</Text>
+              <Text style={styles.dishPrice}>$9.99</Text>
+              <Text style={styles.dishAddOns}>Add-ons available</Text>
             </View>
           </View>
         ))}
 
         {/* Customer Reviews */}
         <Text style={styles.sectionTitle}>Customer Reviews</Text>
-        {restaurantDetails.reviews.map((review) => (
-          <View key={review.id} style={styles.reviewCard}>
-            <Image source={{ uri: review.avatar }} style={styles.reviewAvatar} />
+        {['Review 1', 'Review 2'].map((review, index) => (
+          <View key={index} style={styles.reviewCard}>
+            <Image source={{ uri: 'https://via.placeholder.com/50' }} style={styles.reviewAvatar} />
             <View style={styles.reviewContent}>
-              <Text style={styles.reviewUser}>{review.user}</Text>
-              <Text>{review.rating} ⭐️</Text>
-              <Text>{review.comment}</Text>
+              <Text style={styles.reviewUser}>User {index + 1}</Text>
+              <Text>4.5 ⭐️</Text>
+              <Text>Great experience at {restaurant.name}!</Text>
             </View>
           </View>
         ))}
@@ -103,10 +86,12 @@ const RestaurantDetailScreen = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f8f8',
+    paddingTop: 20,
   },
   restaurantInfo: {
     flexDirection: 'row',
