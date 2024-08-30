@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, Text, FlatList, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 const CartScreen = () => {
@@ -11,7 +11,26 @@ const CartScreen = () => {
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
 
-  // CartItem component to render individual items in the cart
+  useEffect(() => {
+    calculateTotals();
+  }, [cartItems, deliveryOption]);
+
+  const calculateTotals = () => {
+    const newSubtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    setSubtotal(newSubtotal);
+    const deliveryFee = deliveryOption === 'delivery' ? 5 : 0;
+    setTotal(newSubtotal + deliveryFee);
+  };
+
+  const updateQuantity = (id, newQuantity) => {
+    if (newQuantity >= 0) {
+      const updatedItems = cartItems.map(item =>
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      );
+      setCartItems(updatedItems);
+    }
+  };
+
   const CartItem = ({ item }) => (
     <View style={styles.cartItem}>
       <Image source={{ uri: item.image }} style={styles.productImage} />
@@ -19,11 +38,11 @@ const CartScreen = () => {
         <Text style={styles.itemName}>{item.name}</Text>
         <Text>Price: ${item.price.toFixed(2)}</Text>
         <View style={styles.quantityContainer}>
-          <TouchableOpacity style={styles.quantityButton}>
+          <TouchableOpacity style={styles.quantityButton} onPress={() => updateQuantity(item.id, item.quantity - 1)}>
             <Text style={styles.quantityButtonText}>-</Text>
           </TouchableOpacity>
           <Text style={styles.quantityText}>{item.quantity}</Text>
-          <TouchableOpacity style={styles.quantityButton}>
+          <TouchableOpacity style={styles.quantityButton} onPress={() => updateQuantity(item.id, item.quantity + 1)}>
             <Text style={styles.quantityButtonText}>+</Text>
           </TouchableOpacity>
         </View>
@@ -33,17 +52,17 @@ const CartScreen = () => {
 
   return (
     <SafeAreaView>
-      {/* Render the list of cart items using FlatList */}
       <FlatList
         data={cartItems}
         renderItem={({ item }) => <CartItem item={item} />}
         keyExtractor={item => item.id}
         ListHeaderComponent={<Text>Your Cart</Text>}
       />
+      <Text>Subtotal: ${subtotal.toFixed(2)}</Text>
+      <Text>Total: ${total.toFixed(2)}</Text>
     </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   cartItem: {
