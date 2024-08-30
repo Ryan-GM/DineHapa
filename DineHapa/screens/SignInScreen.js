@@ -37,7 +37,7 @@ const SignInScreen = ({ route, navigation }) => {
         style={styles.input}
       />
       <TouchableOpacity style={styles.button}
-      onPress={() => navigation.navigate('HomeScreen')}>
+      onPress={() => navigation.navigate('LocationScreen')}>
         <Text style={styles.buttonText}>Sign in</Text>
       </TouchableOpacity>
       <TouchableOpacity>
