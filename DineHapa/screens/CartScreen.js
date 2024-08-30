@@ -79,6 +79,15 @@ const CartScreen = () => {
                 <Text>Pickup (Free)</Text>
               </TouchableOpacity>
             </View>
+            <TextInput
+              style={styles.promoCodeInput}
+              placeholder="Enter Promo Code"
+              value={promoCode}
+              onChangeText={setPromoCode}
+            />
+            <TouchableOpacity style={styles.checkoutButton}>
+              <Text style={styles.checkoutButtonText}>Checkout</Text>
+            </TouchableOpacity>
           </View>
         }
       />
@@ -150,6 +159,25 @@ const styles = StyleSheet.create({
   },
   selectedOption: {
     backgroundColor: '#e0e0e0',
+  },
+  promoCodeInput: {
+    margin: 10,
+    padding: 10,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  checkoutButton: {
+    margin: 10,
+    padding: 15,
+    backgroundColor: '#ff6347',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  checkoutButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
