@@ -4,12 +4,12 @@ const adminController = require('../controllers/adminController');
 const auth = require('../middleware/auth');
 
 //get users
-adminRoutes.get('/', auth, adminController.getAllUsers);
+adminRoutes.get('/users', adminController.getAllUsers);
 //all restaurants
-adminRoutes.get('/', adminController.getAllUsers);
+adminRoutes.get('/restaurants', adminController.getAllRestaurants);
 //putting approval in restaurants
 adminRoutes.put('/:id/approve', auth, adminController.approveRestaurant);
 //getting all orders
-adminRoutes.get('/', auth, adminController.getAllOrders);
+adminRoutes.get('/orders', auth, adminController.getAllOrders);
 
 module.exports = adminRoutes;
