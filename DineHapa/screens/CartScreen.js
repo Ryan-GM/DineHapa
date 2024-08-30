@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, FlatList, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, FlatList, View, Image, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 
 const CartScreen = () => {
   const [cartItems, setCartItems] = useState([
@@ -31,6 +31,10 @@ const CartScreen = () => {
     }
   };
 
+  const toggleDeliveryOption = (option) => {
+    setDeliveryOption(option);
+  };
+
   const CartItem = ({ item }) => (
     <View style={styles.cartItem}>
       <Image source={{ uri: item.image }} style={styles.productImage} />
@@ -51,20 +55,47 @@ const CartScreen = () => {
   );
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={cartItems}
         renderItem={({ item }) => <CartItem item={item} />}
         keyExtractor={item => item.id}
-        ListHeaderComponent={<Text>Your Cart</Text>}
+        ListHeaderComponent={<Text style={styles.title}>Your Cart</Text>}
+        ListFooterComponent={
+          <View>
+            <Text style={styles.subtotal}>Subtotal: ${subtotal.toFixed(2)}</Text>
+            <View style={styles.deliveryOptions}>
+              <Text>Delivery Options:</Text>
+              <TouchableOpacity
+                style={[styles.option, deliveryOption === 'delivery' && styles.selectedOption]}
+                onPress={() => toggleDeliveryOption('delivery')}
+              >
+                <Text>Delivery (+$5.00)</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.option, deliveryOption === 'pickup' && styles.selectedOption]}
+                onPress={() => toggleDeliveryOption('pickup')}
+              >
+                <Text>Pickup (Free)</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        }
       />
-      <Text>Subtotal: ${subtotal.toFixed(2)}</Text>
-      <Text>Total: ${total.toFixed(2)}</Text>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 10,
+  },
   cartItem: {
     flexDirection: 'row',
     padding: 10,
@@ -102,6 +133,23 @@ const styles = StyleSheet.create({
   quantityText: {
     marginHorizontal: 10,
     fontSize: 16,
+  },
+  subtotal: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    margin: 10,
+  },
+  deliveryOptions: {
+    margin: 10,
+  },
+  option: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    marginTop: 5,
+  },
+  selectedOption: {
+    backgroundColor: '#e0e0e0',
   },
 });
 
