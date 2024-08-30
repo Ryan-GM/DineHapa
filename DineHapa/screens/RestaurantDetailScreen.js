@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-
-import { allRestaurants } from './HomeScreen'; // Adjust the import path as needed
+import { useNavigation } from '@react-navigation/native';
 
 const RestaurantDetailScreen = ({ route }) => {
+  const navigation = useNavigation();
   const { restaurantId, allRestaurants } = route.params;
   const restaurant = allRestaurants.find(r => r.id === restaurantId);
 
@@ -15,6 +14,15 @@ const RestaurantDetailScreen = ({ route }) => {
       </SafeAreaView>
     );
   }
+
+  const handleCategorySelect = (category) => {
+    navigation.navigate('MenuScreen', { 
+      selectedCategory: category, 
+      restaurantId: restaurantId, 
+      allRestaurants: allRestaurants 
+    });
+  };
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -42,13 +50,17 @@ const RestaurantDetailScreen = ({ route }) => {
           showsHorizontalScrollIndicator={false}
           data={['Appetizers', 'Main Courses', 'Desserts', 'Drinks']}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.categoryItem}>
+            <TouchableOpacity 
+              style={styles.categoryItem}
+              onPress={() => handleCategorySelect(item)}
+            >
               <Text style={styles.categoryText}>{item}</Text>
             </TouchableOpacity>
           )}
           keyExtractor={(item) => item}
           contentContainerStyle={styles.categoryContainer}
         />
+
 
         {/* Dish Details */}
         <Text style={styles.sectionTitle}>Popular Dishes</Text>
