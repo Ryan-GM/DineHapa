@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, Modal,SafeAreaView } from 'react-native';
 // import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 // Mock data
 const allRestaurants = [
@@ -41,6 +42,8 @@ const HomeScreen = () => {
   const [restaurants, setRestaurants] = useState(allRestaurants);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', options: [], currentValue: '', onSelect: null });
+
+const navigation = useNavigation();
 
   useEffect(() => {
     filterRestaurants();
@@ -152,8 +155,10 @@ const HomeScreen = () => {
           <RestaurantCard key={restaurant.id} {...restaurant} />
         ))}
 
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton}
+          onPress={() => navigation.navigate('CartScreen')}>
           <Text style={styles.ctaButtonText}>Explore More</Text>
+          
         </TouchableOpacity>
       </ScrollView>
 
