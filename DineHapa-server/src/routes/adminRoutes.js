@@ -4,7 +4,7 @@ const adminController = require('../controllers/adminController');
 const auth = require('../middleware/auth');
 
 //get users
-adminRoutes.get('/users', adminController.getAllUsers);
+adminRoutes.get('/users', auth, adminController.getAllUsers);
 //all restaurants
 adminRoutes.get('/restaurants', adminController.getAllRestaurants);
 //putting approval in restaurants
