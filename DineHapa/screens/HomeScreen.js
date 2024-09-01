@@ -9,9 +9,9 @@ const priceRanges = ['All', '$', '$$', '$$$', '$$$$'];
 const RestaurantCard = ({ restaurant, navigation }) => (
   <TouchableOpacity 
     style={styles.card} 
-    onPress={() => navigation.navigate('RestaurantDetailScreen', { restaurantId: restaurant.id })}
+    onPress={() => navigation.navigate('RestaurantDetailScreen', { restaurantId: restaurant._id })}
   >
-    <Image source={{ uri: 'https://via.placeholder.com/50' }} style={styles.restaurantImage} />
+    <Image source={{ uri: restaurant.logo || 'https://via.placeholder.com/50' }} style={styles.restaurantImage} />
     <View style={styles.cardContent}>
       <Text style={styles.restaurantName}>{restaurant.name}</Text>
       <Text>{restaurant.category} • {restaurant.cuisine} • {restaurant.price}</Text>
@@ -32,10 +32,58 @@ const HomeScreen = () => {
   const [selectedCuisine, setSelectedCuisine] = useState('All');
   const [selectedPrice, setSelectedPrice] = useState('All');
   const [restaurants, setRestaurants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', options: [], currentValue: '', onSelect: null });
 
   const navigation = useNavigation();
+
+  const fetchRestaurants = async () => {
+    try {
+      const response = await fetch('http://192.168.100.2:5000/api/restaurants');
+      const result = await response.json();
+      console.log('Fetched result:', result); // Log the entire result object
+      if (result.status === 'success' && Array.isArray(result.data.restaurants)) {
+        setRestaurants(result.data.restaurants); // Set the restaurants state to the data array
+      } else {
+        Alert.alert('Error', 'Data format is incorrect.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Something went wrong. Please try again later.');
+    }
+  };
+
+  const filterRestaurants = () => {
+    let filtered = restaurants;
+
+    // Search query filter
+    if (searchQuery) {
+      filtered = filtered.filter(restaurant => 
+        (restaurant.name && restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (restaurant.category && restaurant.category.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (restaurant.cuisine && restaurant.cuisine.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+
+    // Category filter
+    if (selectedCategory !== 'All') {
+      filtered = filtered.filter(restaurant => restaurant.tags.includes(selectedCategory));
+    }
+
+    // Cuisine filter
+    if (selectedCuisine !== 'All') {
+      filtered = filtered.filter(restaurant => 
+        restaurant.cuisine && restaurant.cuisine.toLowerCase() === selectedCuisine.toLowerCase()
+      );
+    }
+
+    // Price range filter
+    if (selectedPrice !== 'All') {
+      filtered = filtered.filter(restaurant => restaurant.price === selectedPrice);
+    }
+
+    setFilteredRestaurants(filtered);
+  };
 
   useEffect(() => {
     fetchRestaurants();
@@ -44,46 +92,6 @@ const HomeScreen = () => {
   useEffect(() => {
     filterRestaurants();
   }, [searchQuery, selectedCategory, selectedCuisine, selectedPrice, restaurants]);
-
-  const fetchRestaurants = async () => {
-    try {
-      const response = await fetch('http://192.168.15.42:5000/api/restaurants');
-      const data = await response.json();
-      if (response.ok) {
-        setRestaurants(data);
-      } else {
-        Alert.alert('Error', 'Failed to fetch restaurants.');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Something went wrong. Please try again later.');
-    }
-  };
-
-  const filterRestaurants = () => {
-    let filteredRestaurants = restaurants;
-
-    if (searchQuery) {
-      filteredRestaurants = filteredRestaurants.filter(restaurant => 
-        restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        restaurant.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        restaurant.cuisine.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    if (selectedCategory !== 'All') {
-      filteredRestaurants = filteredRestaurants.filter(restaurant => restaurant.category === selectedCategory);
-    }
-
-    if (selectedCuisine !== 'All') {
-      filteredRestaurants = filteredRestaurants.filter(restaurant => restaurant.cuisine === selectedCuisine);
-    }
-
-    if (selectedPrice !== 'All') {
-      filteredRestaurants = filteredRestaurants.filter(restaurant => restaurant.price === selectedPrice);
-    }
-
-    setRestaurants(filteredRestaurants);
-  };
 
   const handleSearch = (text) => {
     setSearchQuery(text);
@@ -153,22 +161,24 @@ const HomeScreen = () => {
 
         <Text style={styles.sectionTitle}>Featured Restaurants</Text>
         <FlatList
-          data={restaurants.slice(0, 3)}
+          data={filteredRestaurants.slice(0, 3)} // Use filteredRestaurants here
           renderItem={({ item }) => <RestaurantCard restaurant={item} navigation={navigation} />}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id} // Updated to use _id
           horizontal
           showsHorizontalScrollIndicator={false}
         />
 
         <Text style={styles.sectionTitle}>Nearby Restaurants</Text>
-        {restaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.id} restaurant={restaurant} navigation={navigation} />
-        ))}
+        {filteredRestaurants.length > 0 ? (
+          filteredRestaurants.map((restaurant) => (
+            <RestaurantCard key={restaurant._id} restaurant={restaurant} navigation={navigation} />
+          ))
+        ) : (
+          <Text style={styles.noDataText}>No restaurants found</Text>
+        )}
 
-        <TouchableOpacity style={styles.ctaButton}
-          onPress={() => navigation.navigate('CartScreen')}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => navigation.navigate('CartScreen')}>
           <Text style={styles.ctaButtonText}>Explore More</Text>
-          
         </TouchableOpacity>
       </ScrollView>
 
@@ -251,72 +261,82 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     padding: 10,
-    margin: 5,
-    borderRadius: 10,
+    margin: 10,
     backgroundColor: '#fff',
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    shadowRadius: 5,
+    elevation: 5,
   },
   restaurantImage: {
     width: 50,
     height: 50,
-    borderRadius: 25,
+    borderRadius: 5,
+    marginRight: 10,
   },
   cardContent: {
-    marginLeft: 10,
+    flex: 1,
   },
   restaurantName: {
     fontSize: 16,
     fontWeight: 'bold',
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    padding: 15,
-    backgroundColor: '#fff',
+    marginTop: 20,
+    marginLeft: 10,
   },
   categoryContainer: {
-    paddingVertical: 10,
+    flexDirection: 'row',
+    paddingLeft: 10,
   },
   categoryItem: {
     padding: 10,
-    marginHorizontal: 5,
+    marginRight: 10,
+    backgroundColor: '#fff',
     borderRadius: 20,
-    backgroundColor: '#e0e0e0',
+    borderWidth: 1,
+    borderColor: '#ddd',
   },
   selectedCategory: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#007AFF',
   },
   categoryText: {
-    fontSize: 14,
+    color: '#555',
   },
   selectedCategoryText: {
     color: '#fff',
   },
+  noDataText: {
+    textAlign: 'center',
+    color: '#888',
+    marginTop: 20,
+  },
   ctaButton: {
+    backgroundColor: '#007AFF',
     padding: 15,
-    backgroundColor: '#007BFF',
+    borderRadius: 10,
     alignItems: 'center',
-    borderRadius: 5,
-    margin: 15,
+    margin: 20,
   },
   ctaButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: 16,
   },
   modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
+    marginTop: 'auto',
+    backgroundColor: '#fff',
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
     elevation: 5,
   },
   modalTitle: {
@@ -325,13 +345,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   modalOption: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: '#f8f8f8',
-    marginVertical: 5,
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
   },
   selectedModalOption: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#007AFF',
   },
   modalOptionText: {
     fontSize: 16,
@@ -341,13 +360,15 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     marginTop: 15,
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: '#007BFF',
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: '#007AFF',
+    alignItems: 'center',
   },
   closeButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 
