@@ -1,236 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, Modal, SafeAreaView } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
-
-// Mock data
-const allRestaurants = [
-  {
-    id: '1',
-    name: 'Subway',
-    rating: 4.5,
-    distance: 0.2,
-    shipping: 'Free shipping',
-    category: 'Sandwich',
-    price: '$$',
-    cuisine: 'American',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '1-1-1', name: 'Mini Subs', description: 'Assorted mini sandwiches', price: '$4.99', addOns: ['Extra Meat', 'Cheese'] },
-          { id: '1-1-2', name: 'Subs', description: 'Assorted sandwiches', price: '$4.99', addOns: ['Extra Meat', 'Cheese'] },
-          { id: '1-1-3', name: 'Subs', description: 'Assorted sandwiches', price: '$4.99', addOns: ['Extra Meat', 'Cheese'] }
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '1-2-1', name: 'Turkey Sandwich', description: 'Turkey sandwich with lettuce and tomato', price: '$5.99', addOns: ['Extra Meat', 'Cheese'] },
-          { id: '1-2-2', name: 'BLT', description: 'Bacon, lettuce, and tomato', price: '$5.99', addOns: ['Extra Meat', 'Cheese'] },
-          { id: '1-2-3', name: 'BLT', description: 'Bacon, lettuce, and tomato', price: '$5.99', addOns: ['Extra Meat', 'Cheese'] }
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '1-3-1', name: 'Cookie Platter', description: 'Assorted fresh cookies', price: '$3.99', addOns: ['Extra Chocolate', 'Nuts'] },
-          { id: '1-3-2', name: 'Cookie Platter', description: 'Assorted fresh cookies', price: '$3.99', addOns: ['Extra Chocolate', 'Nuts'] },
-
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '1-4', name: 'Fountain Drink', description: 'Unlimited refills', price: '$1.99', addOns: ['Lemon', 'Ice'] },
-
-        ]
-      }
-    ]
-  },
-  {
-    id: '2',
-    name: 'Taco Bell',
-    rating: 4.5,
-    distance: 1.5,
-    shipping: 'Free shipping',
-    category: 'Fast',
-    price: '$',
-    cuisine: 'Mexican',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '2-1-1', name: 'Chips and Salsa', description: 'Tortilla chips with salsa', price: '$3.49', addOns: ['Extra Salsa', 'Guacamole'] },
-          { id: '2-1-2', name: 'Chips and Salsa', description: 'Tortilla chips with salsa', price: '$3.49', addOns: ['Extra Salsa', 'Guacamole'] },
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '2-2-1', name: 'Taco', description: 'Ground beef taco with lettuce and cheese', price: '$1.99', addOns: ['Extra Meat', 'Cheese'] },
-          { id: '2-2-2', name: 'Taco', description: 'Ground beef taco with lettuce and cheese', price: '$1.99', addOns: ['Extra Meat', 'Cheese'] },
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '2-3', name: 'Cinnamon Twists', description: 'Cinnamon and sugar twists', price: '$2.49', addOns: ['Extra Sugar'] }
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '2-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
-        ]
-      }
-    ]
-  },
-  {
-    id: '3',
-    name: 'Burger King',
-    rating: 4.8,
-    distance: 2.6,
-    shipping: 'Free shipping',
-    category: 'Burger',
-    price: '$',
-    cuisine: 'American',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '3-1', name: 'Onion Rings', description: 'Crispy onion rings', price: '$3.99', addOns: ['Extra Sauce'] }
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '3-2', name: 'Whopper', description: 'Flame-grilled beef patty with lettuce, tomato, and pickles', price: '$6.49', addOns: ['Extra Cheese', 'Bacon'] }
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '3-3', name: 'Apple Pie', description: 'Warm apple pie with a flaky crust', price: '$1.99', addOns: [] }
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '3-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
-        ]
-      }
-    ]
-  },
-  {
-    id: '4',
-    name: 'KFC',
-    rating: 4.0,
-    distance: 3.0,
-    shipping: 'Free shipping',
-    category: 'Fastfood',
-    price: '$$',
-    cuisine: 'American',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '4-1', name: 'Chicken Tenders', description: 'Crispy chicken tenders with dipping sauce', price: '$4.99', addOns: ['Extra Sauce'] }
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '4-2', name: 'Fried Chicken', description: 'Classic fried chicken with a crispy coating', price: '$7.99', addOns: ['Extra Biscuits', 'Mashed Potatoes'] }
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '4-3', name: 'Chocolate Cake', description: 'Rich chocolate cake', price: '$2.99', addOns: ['Ice Cream'] }
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '4-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
-        ]
-      }
-    ]
-  },
-  {
-    id: '5',
-    name: 'Pizza Hut',
-    rating: 4.2,
-    distance: 1.8,
-    shipping: '$2 delivery',
-    category: 'Pizza',
-    price: '$$',
-    cuisine: 'Italian',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '5-1', name: 'Breadsticks', description: 'Garlic breadsticks with marinara sauce', price: '$4.49', addOns: ['Extra Cheese'] }
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '5-2', name: 'Pepperoni Pizza', description: 'Classic pepperoni pizza with mozzarella cheese', price: '$9.99', addOns: ['Extra Toppings'] }
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '5-3', name: 'Cinnamon Rolls', description: 'Cinnamon rolls with icing', price: '$3.99', addOns: ['Extra Icing'] }
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '5-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
-        ]
-      }
-    ]
-  },
-  {
-    id: '6',
-    name: 'Panda Express',
-    rating: 4.1,
-    distance: 2.2,
-    shipping: 'Free shipping',
-    category: 'Chinese',
-    price: '$$',
-    cuisine: 'Chinese',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '6-1', name: 'Egg Rolls', description: 'Crispy egg rolls with dipping sauce', price: '$3.99', addOns: ['Extra Sauce'] }
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '6-2', name: 'Orange Chicken', description: 'Sweet and tangy orange chicken', price: '$6.49', addOns: ['Extra Rice', 'Extra Chicken'] }
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '6-3', name: 'Fortune Cookies', description: 'Crispy fortune cookies', price: '$1.49', addOns: [] }
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '6-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
-        ]
-      }
-    ]
-  }
-]
-;
+import { View, Text, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, Modal, SafeAreaView, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const categories = ['All', 'Sandwich', 'Pizza', 'Burgers', 'Chinese', 'Mexican', 'Italian'];
 const cuisines = ['All', 'American', 'Mexican', 'Italian', 'Chinese'];
@@ -239,7 +9,7 @@ const priceRanges = ['All', '$', '$$', '$$$', '$$$$'];
 const RestaurantCard = ({ restaurant, navigation }) => (
   <TouchableOpacity 
     style={styles.card} 
-    onPress={() => navigation.navigate('RestaurantDetailScreen', { restaurantId: restaurant.id, allRestaurants })}
+    onPress={() => navigation.navigate('RestaurantDetailScreen', { restaurantId: restaurant.id })}
   >
     <Image source={{ uri: 'https://via.placeholder.com/50' }} style={styles.restaurantImage} />
     <View style={styles.cardContent}>
@@ -261,18 +31,36 @@ const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedCuisine, setSelectedCuisine] = useState('All');
   const [selectedPrice, setSelectedPrice] = useState('All');
-  const [restaurants, setRestaurants] = useState(allRestaurants);
+  const [restaurants, setRestaurants] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', options: [], currentValue: '', onSelect: null });
 
-  const navigation = useNavigation(); // Access the navigation prop
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    fetchRestaurants();
+  }, []);
 
   useEffect(() => {
     filterRestaurants();
-  }, [searchQuery, selectedCategory, selectedCuisine, selectedPrice]);
+  }, [searchQuery, selectedCategory, selectedCuisine, selectedPrice, restaurants]);
+
+  const fetchRestaurants = async () => {
+    try {
+      const response = await fetch('http://192.168.15.42:5000/api/restaurants');
+      const data = await response.json();
+      if (response.ok) {
+        setRestaurants(data);
+      } else {
+        Alert.alert('Error', 'Failed to fetch restaurants.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Something went wrong. Please try again later.');
+    }
+  };
 
   const filterRestaurants = () => {
-    let filteredRestaurants = allRestaurants;
+    let filteredRestaurants = restaurants;
 
     if (searchQuery) {
       filteredRestaurants = filteredRestaurants.filter(restaurant => 
@@ -452,33 +240,36 @@ const styles = StyleSheet.create({
   },
   dropdownButton: {
     flex: 1,
-    marginRight: 5,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderColor: '#e0e0e0',
+    padding: 10,
+    margin: 5,
+    borderRadius: 5,
+    backgroundColor: '#fff',
     borderWidth: 1,
-    borderRadius: 20,
+    borderColor: '#ddd',
+    alignItems: 'center',
+  },
+  card: {
+    flexDirection: 'row',
+    padding: 10,
+    margin: 5,
+    borderRadius: 10,
     backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  categoryContainer: {
-    padding: 15,
-    backgroundColor: '#fff',
+  restaurantImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
-  categoryItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-    marginRight: 10,
-    backgroundColor: '#f8f8f8',
+  cardContent: {
+    marginLeft: 10,
   },
-  selectedCategory: {
-    backgroundColor: '#ff6347',
-  },
-  categoryText: {
+  restaurantName: {
     fontSize: 16,
-  },
-  selectedCategoryText: {
-    color: '#fff',
     fontWeight: 'bold',
   },
   sectionTitle: {
@@ -487,58 +278,60 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#fff',
   },
-  card: {
-    flexDirection: 'row',
-    padding: 15,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+  categoryContainer: {
+    paddingVertical: 10,
   },
-  restaurantImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 15,
+  categoryItem: {
+    padding: 10,
+    marginHorizontal: 5,
+    borderRadius: 20,
+    backgroundColor: '#e0e0e0',
   },
-  cardContent: {
-    justifyContent: 'center',
+  selectedCategory: {
+    backgroundColor: '#007BFF',
   },
-  restaurantName: {
-    fontSize: 16,
-    fontWeight: 'bold',
+  categoryText: {
+    fontSize: 14,
+  },
+  selectedCategoryText: {
+    color: '#fff',
   },
   ctaButton: {
-    margin: 15,
-    paddingVertical: 15,
-    backgroundColor: '#ff6347',
-    borderRadius: 25,
+    padding: 15,
+    backgroundColor: '#007BFF',
     alignItems: 'center',
+    borderRadius: 5,
+    margin: 15,
   },
   ctaButtonText: {
     color: '#fff',
-    fontSize: 16,
     fontWeight: 'bold',
   },
   modalView: {
-    flex: 1,
-    justifyContent: 'center',
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
     alignItems: 'center',
-    marginTop: 22,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 15,
   },
   modalOption: {
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-    backgroundColor: '#fff',
-    marginBottom: 10,
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: '#f8f8f8',
+    marginVertical: 5,
   },
   selectedModalOption: {
-    backgroundColor: '#ff6347',
+    backgroundColor: '#007BFF',
   },
   modalOptionText: {
     fontSize: 16,
@@ -547,13 +340,14 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   closeButton: {
-    marginTop: 20,
+    marginTop: 15,
     padding: 10,
-    backgroundColor: '#ff6347',
-    borderRadius: 20,
+    borderRadius: 5,
+    backgroundColor: '#007BFF',
   },
   closeButtonText: {
     color: '#fff',
+    fontWeight: 'bold',
   },
 });
 
