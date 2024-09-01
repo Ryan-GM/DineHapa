@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
 // CartItem Component: Represents a single item in the cart
 // Props: 
@@ -36,6 +37,8 @@ const CartItem = ({ item, onUpdateQuantity }) => {
 
 // CartScreen Component: Displays the user's shopping cart with items, promo code input, and checkout option
 const CartScreen = () => {
+  const navigation = useNavigation(); // Use the useNavigation hook
+
   // State: Array of cart items
   const [cartItems, setCartItems] = useState([
     { id: '1', name: 'Prime Beef - Pizza Beautiful', quantity: 2, price: 20.99, image: 'https://example.com/pizza.jpg' },
@@ -127,7 +130,10 @@ const CartScreen = () => {
             {/* Display the total price */}
             <Text style={styles.total}>Total: ${total.toFixed(2)}</Text>
             {/* Checkout Button */}
-            <TouchableOpacity style={styles.checkoutButton}>
+            <TouchableOpacity
+              style={styles.checkoutButton}
+              onPress={() => navigation.navigate('CheckoutScreen')} // Navigate to CheckoutScreen
+            >
               <Text style={styles.checkoutButtonText}>Proceed to Checkout</Text>
             </TouchableOpacity>
           </View>
@@ -136,7 +142,6 @@ const CartScreen = () => {
     </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
