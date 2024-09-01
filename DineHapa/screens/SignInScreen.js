@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignInScreen = ({ navigation }) => {
   const [userName, setUserName] = useState('');
-  const [emailOrUsername, setEmailOrUsername] = useState('');
+  const [email, setEmailOrUsername] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const SignInScreen = ({ navigation }) => {
   }, []);
 
   const handleSignIn = async () => {
-    if (!emailOrUsername || !password) {
+    if (!email || !password) {
       Alert.alert('Error', 'Please provide both email/username and password.');
       return;
     }
@@ -34,23 +34,36 @@ const SignInScreen = ({ navigation }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: emailOrUsername,
-          password: password,
+          email,
+          password,
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        await AsyncStorage.setItem('username', data.name);
-
+        if(data.name !== null && data.name !== undefined){
+          await AsyncStorage.setItem('username', data.name);
+        } else{
+          console.warn('Username is null or undefined, skipping storage');
+        }
+        
         Alert.alert('Success', 'Signed in successfully');
         navigation.navigate('LocationScreen');
       } else {
+        const data = await response.json();
         Alert.alert('Error', data.message || 'Failed to sign in');
       }
     } catch (error) {
-      Alert.alert('Error', 'Something went wrong. Please try again later.');
+      console.error('Error logging in:', error);
+
+      if (error.response && error.response.status === 401){
+        Alert.alert('Error', 'Invalid email/username or password');
+      } else if(error.response && error.response.status === 500){
+        Alert.alert('Error', 'Server error. Please try again later.');
+      } else {
+        Alert.alert('Error', 'Something went wrong. Please try again later.');
+      }
     }
   };
 
@@ -65,7 +78,7 @@ const SignInScreen = ({ navigation }) => {
       <TextInput
         placeholder="Username or Email"
         style={styles.input}
-        value={emailOrUsername}
+        value={email}
         onChangeText={setEmailOrUsername}
       />
       <TextInput
