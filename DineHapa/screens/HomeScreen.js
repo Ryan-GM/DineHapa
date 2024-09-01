@@ -3,234 +3,234 @@ import { View, Text, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity,
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
 // Mock data
-const allRestaurants = [
-  {
-    id: '1',
-    name: 'Subway',
-    rating: 4.5,
-    distance: 0.2,
-    shipping: 'Free shipping',
-    category: 'Sandwich',
-    price: '$$',
-    cuisine: 'American',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '1-1-1', name: 'Mini Subs', description: 'Assorted mini sandwiches', price: '$4.99', addOns: ['Extra Meat', 'Cheese'] },
-          { id: '1-1-2', name: 'Subs', description: 'Assorted sandwiches', price: '$4.99', addOns: ['Extra Meat', 'Cheese'] },
-          { id: '1-1-3', name: 'Subs', description: 'Assorted sandwiches', price: '$4.99', addOns: ['Extra Meat', 'Cheese'] }
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '1-2-1', name: 'Turkey Sandwich', description: 'Turkey sandwich with lettuce and tomato', price: '$5.99', addOns: ['Extra Meat', 'Cheese'] },
-          { id: '1-2-2', name: 'BLT', description: 'Bacon, lettuce, and tomato', price: '$5.99', addOns: ['Extra Meat', 'Cheese'] },
-          { id: '1-2-3', name: 'BLT', description: 'Bacon, lettuce, and tomato', price: '$5.99', addOns: ['Extra Meat', 'Cheese'] }
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '1-3-1', name: 'Cookie Platter', description: 'Assorted fresh cookies', price: '$3.99', addOns: ['Extra Chocolate', 'Nuts'] },
-          { id: '1-3-2', name: 'Cookie Platter', description: 'Assorted fresh cookies', price: '$3.99', addOns: ['Extra Chocolate', 'Nuts'] },
+// const allRestaurants = [
+//   {
+//     id: '1',
+//     name: 'Subway',
+//     rating: 4.5,
+//     distance: 0.2,
+//     shipping: 'Free shipping',
+//     category: 'Sandwich',
+//     price: '$$',
+//     cuisine: 'American',
+//     menu: [
+//       {
+//         category: 'Appetizers',
+//         items: [
+//           { id: '1-1-1', name: 'Mini Subs', description: 'Assorted mini sandwiches', price: '$4.99', addOns: ['Extra Meat', 'Cheese'] },
+//           { id: '1-1-2', name: 'Subs', description: 'Assorted sandwiches', price: '$4.99', addOns: ['Extra Meat', 'Cheese'] },
+//           { id: '1-1-3', name: 'Subs', description: 'Assorted sandwiches', price: '$4.99', addOns: ['Extra Meat', 'Cheese'] }
+//         ]
+//       },
+//       {
+//         category: 'Main Courses',
+//         items: [
+//           { id: '1-2-1', name: 'Turkey Sandwich', description: 'Turkey sandwich with lettuce and tomato', price: '$5.99', addOns: ['Extra Meat', 'Cheese'] },
+//           { id: '1-2-2', name: 'BLT', description: 'Bacon, lettuce, and tomato', price: '$5.99', addOns: ['Extra Meat', 'Cheese'] },
+//           { id: '1-2-3', name: 'BLT', description: 'Bacon, lettuce, and tomato', price: '$5.99', addOns: ['Extra Meat', 'Cheese'] }
+//         ]
+//       },
+//       {
+//         category: 'Desserts',
+//         items: [
+//           { id: '1-3-1', name: 'Cookie Platter', description: 'Assorted fresh cookies', price: '$3.99', addOns: ['Extra Chocolate', 'Nuts'] },
+//           { id: '1-3-2', name: 'Cookie Platter', description: 'Assorted fresh cookies', price: '$3.99', addOns: ['Extra Chocolate', 'Nuts'] },
 
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '1-4', name: 'Fountain Drink', description: 'Unlimited refills', price: '$1.99', addOns: ['Lemon', 'Ice'] },
+//         ]
+//       },
+//       {
+//         category: 'Drinks',
+//         items: [
+//           { id: '1-4', name: 'Fountain Drink', description: 'Unlimited refills', price: '$1.99', addOns: ['Lemon', 'Ice'] },
 
-        ]
-      }
-    ]
-  },
-  {
-    id: '2',
-    name: 'Taco Bell',
-    rating: 4.5,
-    distance: 1.5,
-    shipping: 'Free shipping',
-    category: 'Fast',
-    price: '$',
-    cuisine: 'Mexican',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '2-1-1', name: 'Chips and Salsa', description: 'Tortilla chips with salsa', price: '$3.49', addOns: ['Extra Salsa', 'Guacamole'] },
-          { id: '2-1-2', name: 'Chips and Salsa', description: 'Tortilla chips with salsa', price: '$3.49', addOns: ['Extra Salsa', 'Guacamole'] },
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '2-2-1', name: 'Taco', description: 'Ground beef taco with lettuce and cheese', price: '$1.99', addOns: ['Extra Meat', 'Cheese'] },
-          { id: '2-2-2', name: 'Taco', description: 'Ground beef taco with lettuce and cheese', price: '$1.99', addOns: ['Extra Meat', 'Cheese'] },
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '2-3', name: 'Cinnamon Twists', description: 'Cinnamon and sugar twists', price: '$2.49', addOns: ['Extra Sugar'] }
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '2-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
-        ]
-      }
-    ]
-  },
-  {
-    id: '3',
-    name: 'Burger King',
-    rating: 4.8,
-    distance: 2.6,
-    shipping: 'Free shipping',
-    category: 'Burger',
-    price: '$',
-    cuisine: 'American',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '3-1', name: 'Onion Rings', description: 'Crispy onion rings', price: '$3.99', addOns: ['Extra Sauce'] }
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '3-2', name: 'Whopper', description: 'Flame-grilled beef patty with lettuce, tomato, and pickles', price: '$6.49', addOns: ['Extra Cheese', 'Bacon'] }
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '3-3', name: 'Apple Pie', description: 'Warm apple pie with a flaky crust', price: '$1.99', addOns: [] }
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '3-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
-        ]
-      }
-    ]
-  },
-  {
-    id: '4',
-    name: 'KFC',
-    rating: 4.0,
-    distance: 3.0,
-    shipping: 'Free shipping',
-    category: 'Fastfood',
-    price: '$$',
-    cuisine: 'American',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '4-1', name: 'Chicken Tenders', description: 'Crispy chicken tenders with dipping sauce', price: '$4.99', addOns: ['Extra Sauce'] }
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '4-2', name: 'Fried Chicken', description: 'Classic fried chicken with a crispy coating', price: '$7.99', addOns: ['Extra Biscuits', 'Mashed Potatoes'] }
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '4-3', name: 'Chocolate Cake', description: 'Rich chocolate cake', price: '$2.99', addOns: ['Ice Cream'] }
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '4-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
-        ]
-      }
-    ]
-  },
-  {
-    id: '5',
-    name: 'Pizza Hut',
-    rating: 4.2,
-    distance: 1.8,
-    shipping: '$2 delivery',
-    category: 'Pizza',
-    price: '$$',
-    cuisine: 'Italian',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '5-1', name: 'Breadsticks', description: 'Garlic breadsticks with marinara sauce', price: '$4.49', addOns: ['Extra Cheese'] }
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '5-2', name: 'Pepperoni Pizza', description: 'Classic pepperoni pizza with mozzarella cheese', price: '$9.99', addOns: ['Extra Toppings'] }
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '5-3', name: 'Cinnamon Rolls', description: 'Cinnamon rolls with icing', price: '$3.99', addOns: ['Extra Icing'] }
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '5-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
-        ]
-      }
-    ]
-  },
-  {
-    id: '6',
-    name: 'Panda Express',
-    rating: 4.1,
-    distance: 2.2,
-    shipping: 'Free shipping',
-    category: 'Chinese',
-    price: '$$',
-    cuisine: 'Chinese',
-    menu: [
-      {
-        category: 'Appetizers',
-        items: [
-          { id: '6-1', name: 'Egg Rolls', description: 'Crispy egg rolls with dipping sauce', price: '$3.99', addOns: ['Extra Sauce'] }
-        ]
-      },
-      {
-        category: 'Main Courses',
-        items: [
-          { id: '6-2', name: 'Orange Chicken', description: 'Sweet and tangy orange chicken', price: '$6.49', addOns: ['Extra Rice', 'Extra Chicken'] }
-        ]
-      },
-      {
-        category: 'Desserts',
-        items: [
-          { id: '6-3', name: 'Fortune Cookies', description: 'Crispy fortune cookies', price: '$1.49', addOns: [] }
-        ]
-      },
-      {
-        category: 'Drinks',
-        items: [
-          { id: '6-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
-        ]
-      }
-    ]
-  }
-]
-;
+//         ]
+//       }
+//     ]
+//   },
+//   {
+//     id: '2',
+//     name: 'Taco Bell',
+//     rating: 4.5,
+//     distance: 1.5,
+//     shipping: 'Free shipping',
+//     category: 'Fast',
+//     price: '$',
+//     cuisine: 'Mexican',
+//     menu: [
+//       {
+//         category: 'Appetizers',
+//         items: [
+//           { id: '2-1-1', name: 'Chips and Salsa', description: 'Tortilla chips with salsa', price: '$3.49', addOns: ['Extra Salsa', 'Guacamole'] },
+//           { id: '2-1-2', name: 'Chips and Salsa', description: 'Tortilla chips with salsa', price: '$3.49', addOns: ['Extra Salsa', 'Guacamole'] },
+//         ]
+//       },
+//       {
+//         category: 'Main Courses',
+//         items: [
+//           { id: '2-2-1', name: 'Taco', description: 'Ground beef taco with lettuce and cheese', price: '$1.99', addOns: ['Extra Meat', 'Cheese'] },
+//           { id: '2-2-2', name: 'Taco', description: 'Ground beef taco with lettuce and cheese', price: '$1.99', addOns: ['Extra Meat', 'Cheese'] },
+//         ]
+//       },
+//       {
+//         category: 'Desserts',
+//         items: [
+//           { id: '2-3', name: 'Cinnamon Twists', description: 'Cinnamon and sugar twists', price: '$2.49', addOns: ['Extra Sugar'] }
+//         ]
+//       },
+//       {
+//         category: 'Drinks',
+//         items: [
+//           { id: '2-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
+//         ]
+//       }
+//     ]
+//   },
+//   {
+//     id: '3',
+//     name: 'Burger King',
+//     rating: 4.8,
+//     distance: 2.6,
+//     shipping: 'Free shipping',
+//     category: 'Burger',
+//     price: '$',
+//     cuisine: 'American',
+//     menu: [
+//       {
+//         category: 'Appetizers',
+//         items: [
+//           { id: '3-1', name: 'Onion Rings', description: 'Crispy onion rings', price: '$3.99', addOns: ['Extra Sauce'] }
+//         ]
+//       },
+//       {
+//         category: 'Main Courses',
+//         items: [
+//           { id: '3-2', name: 'Whopper', description: 'Flame-grilled beef patty with lettuce, tomato, and pickles', price: '$6.49', addOns: ['Extra Cheese', 'Bacon'] }
+//         ]
+//       },
+//       {
+//         category: 'Desserts',
+//         items: [
+//           { id: '3-3', name: 'Apple Pie', description: 'Warm apple pie with a flaky crust', price: '$1.99', addOns: [] }
+//         ]
+//       },
+//       {
+//         category: 'Drinks',
+//         items: [
+//           { id: '3-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
+//         ]
+//       }
+//     ]
+//   },
+//   {
+//     id: '4',
+//     name: 'KFC',
+//     rating: 4.0,
+//     distance: 3.0,
+//     shipping: 'Free shipping',
+//     category: 'Fastfood',
+//     price: '$$',
+//     cuisine: 'American',
+//     menu: [
+//       {
+//         category: 'Appetizers',
+//         items: [
+//           { id: '4-1', name: 'Chicken Tenders', description: 'Crispy chicken tenders with dipping sauce', price: '$4.99', addOns: ['Extra Sauce'] }
+//         ]
+//       },
+//       {
+//         category: 'Main Courses',
+//         items: [
+//           { id: '4-2', name: 'Fried Chicken', description: 'Classic fried chicken with a crispy coating', price: '$7.99', addOns: ['Extra Biscuits', 'Mashed Potatoes'] }
+//         ]
+//       },
+//       {
+//         category: 'Desserts',
+//         items: [
+//           { id: '4-3', name: 'Chocolate Cake', description: 'Rich chocolate cake', price: '$2.99', addOns: ['Ice Cream'] }
+//         ]
+//       },
+//       {
+//         category: 'Drinks',
+//         items: [
+//           { id: '4-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
+//         ]
+//       }
+//     ]
+//   },
+//   {
+//     id: '5',
+//     name: 'Pizza Hut',
+//     rating: 4.2,
+//     distance: 1.8,
+//     shipping: '$2 delivery',
+//     category: 'Pizza',
+//     price: '$$',
+//     cuisine: 'Italian',
+//     menu: [
+//       {
+//         category: 'Appetizers',
+//         items: [
+//           { id: '5-1', name: 'Breadsticks', description: 'Garlic breadsticks with marinara sauce', price: '$4.49', addOns: ['Extra Cheese'] }
+//         ]
+//       },
+//       {
+//         category: 'Main Courses',
+//         items: [
+//           { id: '5-2', name: 'Pepperoni Pizza', description: 'Classic pepperoni pizza with mozzarella cheese', price: '$9.99', addOns: ['Extra Toppings'] }
+//         ]
+//       },
+//       {
+//         category: 'Desserts',
+//         items: [
+//           { id: '5-3', name: 'Cinnamon Rolls', description: 'Cinnamon rolls with icing', price: '$3.99', addOns: ['Extra Icing'] }
+//         ]
+//       },
+//       {
+//         category: 'Drinks',
+//         items: [
+//           { id: '5-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
+//         ]
+//       }
+//     ]
+//   },
+//   {
+//     id: '6',
+//     name: 'Panda Express',
+//     rating: 4.1,
+//     distance: 2.2,
+//     shipping: 'Free shipping',
+//     category: 'Chinese',
+//     price: '$$',
+//     cuisine: 'Chinese',
+//     menu: [
+//       {
+//         category: 'Appetizers',
+//         items: [
+//           { id: '6-1', name: 'Egg Rolls', description: 'Crispy egg rolls with dipping sauce', price: '$3.99', addOns: ['Extra Sauce'] }
+//         ]
+//       },
+//       {
+//         category: 'Main Courses',
+//         items: [
+//           { id: '6-2', name: 'Orange Chicken', description: 'Sweet and tangy orange chicken', price: '$6.49', addOns: ['Extra Rice', 'Extra Chicken'] }
+//         ]
+//       },
+//       {
+//         category: 'Desserts',
+//         items: [
+//           { id: '6-3', name: 'Fortune Cookies', description: 'Crispy fortune cookies', price: '$1.49', addOns: [] }
+//         ]
+//       },
+//       {
+//         category: 'Drinks',
+//         items: [
+//           { id: '6-4', name: 'Soft Drink', description: 'Choice of soda', price: '$1.49', addOns: ['Ice', 'Lemon'] }
+//         ]
+//       }
+//     ]
+//   }
+// ]
+// ;
 
 const categories = ['All', 'Sandwich', 'Pizza', 'Burgers', 'Chinese', 'Mexican', 'Italian'];
 const cuisines = ['All', 'American', 'Mexican', 'Italian', 'Chinese'];
