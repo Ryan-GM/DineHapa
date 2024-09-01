@@ -1,6 +1,19 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const menuItemSchema = new Schema({
+  category: {
+      type: String,
+      enum: ['Appetizers', 'Main Courses', 'Desserts', 'Drinks'],
+      required: true
+  },
+  items: [{
+      name: String,
+      description: String,
+      price: Number
+  }]
+});
+
 const RestaurantSchema = new Schema(
   {
     name: {
@@ -44,12 +57,7 @@ const RestaurantSchema = new Schema(
       ref: "User",
       required: true,
     },
-    menuItems: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "MenuItem",
-      },
-    ],
+    menuItems: [menuItemSchema] 
   },
   {
     timestamps: true,
