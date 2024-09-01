@@ -28,7 +28,7 @@ const SignInScreen = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://192.168.15.42:5000/api/users/login', {
+      const response = await fetch('http://192.168.100.2:5000/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

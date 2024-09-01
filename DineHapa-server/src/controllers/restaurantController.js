@@ -17,6 +17,7 @@ exports.getAllRestaurants = async (req, res) => {
             },
         });
     } catch (err) {
+        
         // Handle errors, sending a response with status 500
         res.status(500).json({
             status: "error",
