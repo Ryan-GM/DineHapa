@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity,Alert } from 'react-native';
-import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChangePassword = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [email, setEmail] = useState('');
+
+    useEffect(() => {
+      const fetchStoredEmail = async () => {
+        try {
+          const storedEmail = await AsyncStorage.getItem('email');
+          if (storedEmail) {
+            setEmail(storedEmail);
+          }
+        } catch (error) {
+          console.error('Failed to fetch stored email', error);
+        }
+      };
+
+      fetchStoredEmail();
+    }, []);
   
-    const handleChangePassword = () => {
+    const handleChangePassword = async () => {
       if (!currentPassword || !newPassword || !confirmPassword) {
         Alert.alert("Error", "Please fill out all fields.");
         return;
@@ -25,7 +41,31 @@ const ChangePassword = () => {
       }
 
       Alert.alert("Success", "Your password has been changed.");
-    };
+
+      try{
+        const response = await fetch('http://192.168.0.100:5000/api/users/profile', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            currentPassword,
+            newPassword,
+          }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        Alert.alert('Success', 'Password changed successfully');
+      } else {
+        Alert.alert('Error', data.message || 'Failed to change password');
+      } 
+    } catch (error) {
+      console.error('Error changing password:', error);
+    }
+  };
+    
   
     return (
       <View style={styles.container}>
