@@ -10,6 +10,10 @@ import MenuScreen from './screens/MenuScreen';import LocationScreen from './scre
 import CartScreen from './screens/CartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 
+import UserProfileScreen from './screens/UserProfile';
+import ChangePassword from './screens/ChangePassword';
+import AccountInfo from './screens/AccountInfo';
+import OrderConfirmation from './screens/OrderConfirmation';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -51,6 +55,26 @@ const App = () => {
           component={MenuScreen} 
           options={{ headerShown: false }}
           />
+        <Stack.Screen 
+          name="UserProfileScreen" 
+          component={UserProfileScreen} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="ChangePassword" 
+          component={ChangePassword} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="AccountInfo" 
+          component={AccountInfo} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="OrderConfirmation" 
+          component={OrderConfirmation} 
+          options={{ headerShown: false }} 
+        />
         
         <Stack.Screen 
           name="CartScreen" 
