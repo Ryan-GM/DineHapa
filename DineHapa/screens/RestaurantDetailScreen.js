@@ -36,12 +36,13 @@ const RestaurantDetailScreen = ({ route }) => {
   }
 
   const handleCategorySelect = (category) => {
-    navigation.navigate('MenuScreen', { 
-      selectedCategory: category, 
-      restaurantId: restaurantId, 
-      allRestaurants: allRestaurants 
+    navigation.navigate('MenuScreen', {
+      selectedCategory: category,
+      restaurant: restaurant, // Pass the full restaurant object
+      allRestaurants: allRestaurants
     });
   };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,7 +70,7 @@ const RestaurantDetailScreen = ({ route }) => {
           showsHorizontalScrollIndicator={false}
           data={['Appetizers', 'Main Courses', 'Desserts', 'Drinks']}
           renderItem={({ item }) => (
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.categoryItem}
               onPress={() => handleCategorySelect(item)}
             >
