@@ -76,11 +76,11 @@ const CheckoutScreen = () => {
       </View>
     )}
 
-    <TouchableOpacity style={styles.payNowButton} onPress={() => navigation.navigate('OrderConfirmationScreen')}>
-      <Text style={styles.payNowButtonText}>Pay Now</Text>
-    </TouchableOpacity>
-  </ScrollView>
-</SafeAreaView>
+        <TouchableOpacity style={styles.payNowButton} onPress={() => navigation.navigate('OrderConfirmationScreen')}>
+          <Text style={styles.payNowButtonText}>Pay Now</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

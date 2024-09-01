@@ -14,7 +14,7 @@ const MenuScreen = () => {
 
   const handleAddToCart = (item) => {
     setCart([...cart, { ...item, quantity: 1 }]);
-    Alert.alert(`Added to Cart', ${item.name} has been added to your cart.`);
+    Alert.alert('Added to Cart', `${item.name} has been added to your cart.`);
   };
 
   const navigateToCart = () => {
