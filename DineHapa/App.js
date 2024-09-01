@@ -7,12 +7,15 @@ import SignUpScreen from './screens/SignUpScreen';
 import HomeScreen from './screens/HomeScreen';
 import RestaurantDetailScreen from './screens/RestaurantDetailScreen';
 import MenuScreen from './screens/MenuScreen';
+import UserProfileScreen from './screens/UserProfile';
+import ChangePassword from './screens/ChangePassword';
+import AccountInfo from './screens/AccountInfo';
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="CarouselScreen">
+      <Stack.Navigator initialRouteName="UserProfileScreen">
         <Stack.Screen 
           name="CarouselScreen" 
           component={CarouselScreen} 
@@ -43,6 +46,21 @@ const App = () => {
           component={MenuScreen} 
           options={{ headerShown: false }}
           />
+        <Stack.Screen 
+          name="UserProfileScreen" 
+          component={UserProfileScreen} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="ChangePassword" 
+          component={ChangePassword} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="AccountInfo" 
+          component={AccountInfo} 
+          options={{ headerShown: false }} 
+        />
         
       </Stack.Navigator>
 
