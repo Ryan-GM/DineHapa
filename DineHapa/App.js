@@ -6,6 +6,7 @@ import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import HomeScreen from './screens/HomeScreen';
 import LocationScreen from './screens/LocationScreen';
+import CartScreen from './screens/CartScreen';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,11 @@ const App = () => {
         <Stack.Screen 
           name="HomeScreen" 
           component={HomeScreen} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="CartScreen" 
+          component={CartScreen} 
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>
