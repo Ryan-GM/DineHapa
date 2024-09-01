@@ -25,62 +25,62 @@ const CheckoutScreen = () => {
         <Text style={styles.title}>Payment</Text>
         <Text style={styles.subtitle}>All transactions are secure and encrypted</Text>
 
-        {renderPaymentOption('card', 'Credit or Debit Card')}
-        {paymentMethod === 'card' && (
-          <View style={styles.cardForm}>
-            <TextInput
-              style={styles.input}
-              placeholder="Card Number"
-              value={cardNumber}
-              onChangeText={setCardNumber}
-              keyboardType="numeric"
-            />
-            <View style={styles.row}>
-              <TextInput
-                style={[styles.input, styles.halfWidth]}
-                placeholder="Expiration Date (MM/YY)"
-                value={expirationDate}
-                onChangeText={setExpirationDate}
-              />
-              <TextInput
-                style={[styles.input, styles.halfWidth]}
-                placeholder="Security Code"
-                value={securityCode}
-                onChangeText={setSecurityCode}
-                keyboardType="numeric"
-              />
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder="Name on Card"
-              value={nameOnCard}
-              onChangeText={setNameOnCard}
-            />
-            <TouchableOpacity
-              style={styles.checkbox}
-              onPress={() => setUseShippingAddress(!useShippingAddress)}
-            >
-              <Text>Use shipping address as billing address</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {renderPaymentOption('mpesa', 'M-Pesa')}
-        {paymentMethod === 'mpesa' && (
-          <View style={styles.mpesaForm}>
-            <TextInput
-              style={styles.input}
-              placeholder="M-Pesa Phone Number"
-              keyboardType="phone-pad"
-            />
-          </View>
-        )}
-
-        <TouchableOpacity style={styles.payNowButton}>
-          <Text style={styles.payNowButtonText}>Pay Now</Text>
+    {renderPaymentOption('card', 'Credit or Debit Card')}
+    {paymentMethod === 'card' && (
+      <View style={styles.cardForm}>
+        <TextInput
+          style={styles.input}
+          placeholder="Card Number"
+          value={cardNumber}
+          onChangeText={setCardNumber}
+          keyboardType="numeric"
+        />
+        <View style={styles.row}>
+          <TextInput
+            style={[styles.input, styles.halfWidth]}
+            placeholder="Expiration Date (MM/YY)"
+            value={expirationDate}
+            onChangeText={setExpirationDate}
+          />
+          <TextInput
+            style={[styles.input, styles.halfWidth]}
+            placeholder="Security Code"
+            value={securityCode}
+            onChangeText={setSecurityCode}
+            keyboardType="numeric"
+          />
+        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Name on Card"
+          value={nameOnCard}
+          onChangeText={setNameOnCard}
+        />
+        <TouchableOpacity
+          style={styles.checkbox}
+          onPress={() => setUseShippingAddress(!useShippingAddress)}
+        >
+          <Text>Use shipping address as billing address</Text>
         </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+    )}
+
+    {renderPaymentOption('mpesa', 'M-Pesa')}
+    {paymentMethod === 'mpesa' && (
+      <View style={styles.mpesaForm}>
+        <TextInput
+          style={styles.input}
+          placeholder="M-Pesa Phone Number"
+          keyboardType="phone-pad"
+        />
+      </View>
+    )}
+
+    <TouchableOpacity style={styles.payNowButton} onPress={() => navigation.navigate('OrderConfirmationScreen')}>
+      <Text style={styles.payNowButtonText}>Pay Now</Text>
+    </TouchableOpacity>
+  </ScrollView>
+</SafeAreaView>
   );
 };
 
@@ -154,3 +154,4 @@ const styles = StyleSheet.create({
 });
 
 export default CheckoutScreen;
+
