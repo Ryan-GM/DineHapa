@@ -91,7 +91,7 @@ const SignInScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={handleSignIn}>
         <Text style={styles.buttonText}>Sign in</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')} >
         <Text style={styles.forgotPassword}>Forgot Password?</Text>
       </TouchableOpacity>
       <View style={styles.socialButtons}>
