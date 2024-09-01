@@ -5,7 +5,8 @@ import CarouselScreen from './screens/CarouselScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import HomeScreen from './screens/HomeScreen';
-import LocationScreen from './screens/LocationScreen';
+import RestaurantDetailScreen from './screens/RestaurantDetailScreen';
+import MenuScreen from './screens/MenuScreen';import LocationScreen from './screens/LocationScreen';
 import CartScreen from './screens/CartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 
@@ -40,6 +41,17 @@ const App = () => {
           component={HomeScreen} 
           options={{ headerShown: false }} 
         />
+        <Stack.Screen 
+          name="RestaurantDetailScreen" 
+          component={RestaurantDetailScreen} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="MenuScreen" 
+          component={MenuScreen} 
+          options={{ headerShown: false }}
+          />
+        
         <Stack.Screen 
           name="CartScreen" 
           component={CartScreen} 

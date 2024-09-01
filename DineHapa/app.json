@@ -3,6 +3,12 @@
     "name": "DineHapa",
     "slug": "DineHapa",
     "version": "1.0.0",
-    "entryPoint": "./App.js"
+    "entryPoint": "./App.js",
+    "android": {
+      "package": "com.anonymous.DineHapa"
+    },
+    "ios": {
+      "bundleIdentifier": "com.anonymous.DineHapa"
+    }
   }
 }

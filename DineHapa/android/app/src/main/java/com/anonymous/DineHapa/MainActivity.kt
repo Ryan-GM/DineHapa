@@ -1,4 +1,4 @@
-package com.dinehapa
+package com.anonymous.DineHapa
 
 import android.os.Build
 import android.os.Bundle
