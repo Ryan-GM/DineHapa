@@ -17,7 +17,7 @@ router.put("/:id", RestaurantController.updateRestaurant);
 // Route to delete a restaurant
 router.delete("/:id", RestaurantController.deleteRestaurant);
 
-// Route to get nearby restaurants
-router.get("/nearby/:latitude/:longitude", RestaurantController.getNearbyRestaurants);
+// // Route to get nearby restaurants
+// router.get("/nearby/:latitude/:longitude", RestaurantController.getNearbyRestaurants);
 
 module.exports = router;

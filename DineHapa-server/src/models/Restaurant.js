@@ -7,7 +7,16 @@ const RestaurantSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-     
+    },
+    logo: {
+      type: String, // URL or path to the logo image
+      required: true,
+    },
+    rating: {
+      type: Number,
+      min: 0,
+      max: 5, // Assuming rating is out of 5
+      default: 0,
     },
     description: {
       type: String,
@@ -17,30 +26,28 @@ const RestaurantSchema = new Schema(
       type: String,
       required: true,
     },
-    city: {
-      type: String,
+    phoneNumber: {
+      type: String, // Phone number as a string
       required: true,
     },
+    operatingHours: {
+      type: String, // Operating hours as a string (e.g., "9 AM - 9 PM")
+      required: true,
+    },
+    cuisine: {
+      type: String, // Type of cuisine (e.g., "Italian", "Chinese")
+      required: true,
+    },
+    tags: [String], // Tags related to the restaurant (e.g., ["Family-Friendly", "Vegan"])
     ownerId: {
-      type: Schema.Types.ObjectId,  // Updated to ObjectId
-      ref: "User",                  // Assuming you have a User model
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
-    },
-    location: {
-      type: {
-        type: String,
-        enum: ["Point"],            // 'Point' is required for GeoJSON
-        required: true,
-      },
-      coordinates: {
-        type: [Number],
-        required: true,
-      },
     },
     menuItems: [
       {
         type: Schema.Types.ObjectId,
-        ref: "MenuItem",           // Assuming you have a MenuItem model
+        ref: "MenuItem",
       },
     ],
   },
@@ -49,9 +56,6 @@ const RestaurantSchema = new Schema(
   }
 );
 
-// Adding a geospatial index for location
-RestaurantSchema.index({ location: "2dsphere" });
-
-// Creating the model for restaurants
+// Create the model for restaurants
 const Restaurant = mongoose.model("Restaurant", RestaurantSchema);
 module.exports = Restaurant;

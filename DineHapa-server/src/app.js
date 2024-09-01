@@ -9,7 +9,8 @@ const adminRoutes = require('./routes/adminRoutes');
 require('dotenv').config();
 
 const app = express();
-
+const cors = require('cors');
+app.use(cors());
 // Middleware to parse JSON bodies
 app.use(express.json());
 
