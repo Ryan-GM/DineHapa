@@ -1,51 +1,54 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 const MenuScreen = () => {
   const route = useRoute();
+  const navigation = useNavigation(); // Access the navigation prop
   const { restaurantId, selectedCategory, allRestaurants } = route.params;
 
-  // Find the restaurant
+  const [cart, setCart] = useState([]);
+
   const restaurant = allRestaurants.find(r => r.id === restaurantId);
+  const menuSection = restaurant?.menu?.find(section => section.category === selectedCategory);
 
-  if (!restaurant) {
-    return <Text style={styles.errorText}>Restaurant not found</Text>;
-  }
+  const handleAddToCart = (item) => {
+    setCart([...cart, { ...item, quantity: 1 }]);
+    Alert.alert('Added to Cart', `${item.name} has been added to your cart.`);
+  };
 
-  // Check if menu exists and is not empty
-  if (!restaurant.menu || restaurant.menu.length === 0) {
-    return <Text style={styles.errorText}>Menu not available</Text>;
-  }
-
-  // Find the menu section
-  const menuSection = restaurant.menu.find(section => section.category === selectedCategory);
-
-  if (!menuSection) {
-    return <Text style={styles.errorText}>Category not found</Text>;
-  }
+  const navigateToCart = () => {
+    navigation.navigate('CartScreen', { cartItems: cart }); // Pass the cart items to CartScreen
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{selectedCategory}</Text>
       <FlatList
-        data={menuSection.items}
+        data={menuSection?.items || []}
         renderItem={({ item }) => (
           <View style={styles.menuItem}>
-            {item.image && <Image source={{ uri: item.image }} style={styles.menuItemImage} />}
-            <View style={styles.menuItemDetails}>
-              <Text style={styles.menuItemName}>{item.name}</Text>
-              <Text style={styles.menuItemDescription}>{item.description}</Text>
-              <Text style={styles.menuItemPrice}>{item.price}</Text>
-            </View>
+            <Text style={styles.menuItemName}>{item.name}</Text>
+            <Text>{item.price}</Text>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => handleAddToCart(item)}
+            >
+              <Text style={styles.addButtonText}>Add to Cart</Text>
+            </TouchableOpacity>
           </View>
         )}
         keyExtractor={(item) => item.id.toString()}
       />
+      <TouchableOpacity
+        style={styles.cartButton}
+        onPress={navigateToCart} // Navigate to CartScreen
+      >
+        <Text style={styles.cartButtonText}>Go to Cart ({cart.length} items)</Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
