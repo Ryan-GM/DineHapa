@@ -149,36 +149,36 @@ exports.deleteRestaurant = async (req, res) => {
 };
 
 // Fetch nearby restaurants based on location
-exports.getNearbyRestaurants = async (req, res) => {
-    try {
-        const { latitude, longitude } = req.params; // Extract latitude and longitude from request parameters
+// exports.getNearbyRestaurants = async (req, res) => {
+//     try {
+//         const { latitude, longitude } = req.params; // Extract latitude and longitude from request parameters
         
-        // Find nearby restaurants using geospatial query
-        const nearbyRestaurants = await Restaurant.find({
-            location: {
-                $near: {
-                    $geometry: {
-                        type: "Point",
-                        coordinates: [parseFloat(longitude), parseFloat(latitude)], // Ensure coordinates are numbers
-                    },
-                },
-            },
-        });
+//         // Find nearby restaurants using geospatial query
+//         const nearbyRestaurants = await Restaurant.find({
+//             location: {
+//                 $near: {
+//                     $geometry: {
+//                         type: "Point",
+//                         coordinates: [parseFloat(longitude), parseFloat(latitude)], // Ensure coordinates are numbers
+//                     },
+//                 },
+//             },
+//         });
         
-        // Send response with status 200 and the list of nearby restaurants
-        res.status(200).json({
-            status: "success",
-            results: nearbyRestaurants.length, // Number of nearby restaurants found
-            data: {
-                restaurants: nearbyRestaurants, // List of nearby restaurants
-            },
-        });
-    } catch (err) {
-        // Handle errors, sending a response with status 500
-        res.status(500).json({
-            status: "error",
-            message: "Failed to retrieve nearby restaurants", 
-            error: err.message, 
-        });
-    }
-};
+//         // Send response with status 200 and the list of nearby restaurants
+//         res.status(200).json({
+//             status: "success",
+//             results: nearbyRestaurants.length, // Number of nearby restaurants found
+//             data: {
+//                 restaurants: nearbyRestaurants, // List of nearby restaurants
+//             },
+//         });
+//     } catch (err) {
+//         // Handle errors, sending a response with status 500
+//         res.status(500).json({
+//             status: "error",
+//             message: "Failed to retrieve nearby restaurants", 
+//             error: err.message, 
+//         });
+//     }
+// };
