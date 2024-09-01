@@ -6,6 +6,8 @@ import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import HomeScreen from './screens/HomeScreen';
 
+import main from './screens/AdminDashboard/main';
+
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -32,6 +34,14 @@ const App = () => {
           component={HomeScreen} 
           options={{ headerShown: false }} 
         />
+
+        <Stack.Screen 
+          name="Admin Dashboard" 
+          component={main} 
+          options={{ headerShown: false }} 
+        />
+
+        
       </Stack.Navigator>
 
     </NavigationContainer>
