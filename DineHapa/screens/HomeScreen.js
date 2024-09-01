@@ -7,6 +7,7 @@ const cuisines = ['All', 'American', 'Mexican', 'Italian', 'Chinese'];
 const priceRanges = ['All', '$', '$$', '$$$', '$$$$'];
 
 const RestaurantCard = ({ restaurant, navigation }) => (
+  
   <TouchableOpacity 
     style={styles.card} 
     onPress={() => navigation.navigate('RestaurantDetailScreen', { restaurantId: restaurant._id })}
@@ -40,7 +41,7 @@ const HomeScreen = () => {
 
   const fetchRestaurants = async () => {
     try {
-      const response = await fetch('http://192.168.100.2:5000/api/restaurants');
+      const response = await fetch('http://192.168.15.42:5000/api/restaurants');
       const result = await response.json();
       console.log('Fetched result:', result); // Log the entire result object
       if (result.status === 'success' && Array.isArray(result.data.restaurants)) {
@@ -59,22 +60,20 @@ const HomeScreen = () => {
     // Search query filter
     if (searchQuery) {
       filtered = filtered.filter(restaurant => 
-        (restaurant.name && restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (restaurant.category && restaurant.category.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (restaurant.cuisine && restaurant.cuisine.toLowerCase().includes(searchQuery.toLowerCase()))
+        restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        restaurant.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        restaurant.cuisine.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
     // Category filter
     if (selectedCategory !== 'All') {
-      filtered = filtered.filter(restaurant => restaurant.tags.includes(selectedCategory));
+      filtered = filtered.filter(restaurant => restaurant.category === selectedCategory);
     }
 
     // Cuisine filter
     if (selectedCuisine !== 'All') {
-      filtered = filtered.filter(restaurant => 
-        restaurant.cuisine && restaurant.cuisine.toLowerCase() === selectedCuisine.toLowerCase()
-      );
+      filtered = filtered.filter(restaurant => restaurant.cuisine === selectedCuisine);
     }
 
     // Price range filter
@@ -110,6 +109,10 @@ const HomeScreen = () => {
     setModalVisible(false);
   };
 
+
+ 
+
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
