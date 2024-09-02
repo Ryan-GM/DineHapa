@@ -27,44 +27,44 @@ const SignInScreen = ({ navigation }) => {
       return;
     }
 
-    try {
-      const response = await fetch('http://192.168.0.100:5000/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+    // try {
+    //   const response = await fetch('http://192.168.56.1:5000/api/users/login', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       email,
+    //       password,
+    //     }),
+    //   });
 
-      const data = await response.json();
+    //   const data = await response.json();
 
-      if (response.ok) {
-        if(data.name !== null && data.name !== undefined){
-          await AsyncStorage.setItem('username', data.name);
-        } else{
-          console.warn('Username is null or undefined, skipping storage');
-        }
+    //   if (response.ok) {
+    //     if(data.name !== null && data.name !== undefined){
+    //       await AsyncStorage.setItem('username', data.name);
+    //     } else{
+    //       console.warn('Username is null or undefined, skipping storage');
+    //     }
         
-        Alert.alert('Success', 'Signed in successfully');
-        navigation.navigate('LocationScreen');
-      } else {
-        const data = await response.json();
-        Alert.alert('Error', data.message || 'Failed to sign in');
-      }
-    } catch (error) {
-      console.error('Error logging in:', error);
+    //     Alert.alert('Success', 'Signed in successfully');
+    //     navigation.navigate('LocationScreen');
+    //   } else {
+    //     const data = await response.json();
+    //     Alert.alert('Error', data.message || 'Failed to sign in');
+    //   }
+    // } catch (error) {
+    //   console.error('Error logging in:', error);
 
-      if (error.response && error.response.status === 401){
-        Alert.alert('Error', 'Invalid email/username or password');
-      } else if(error.response && error.response.status === 500){
-        Alert.alert('Error', 'Server error. Please try again later.');
-      } else {
-        Alert.alert('Error', 'Something went wrong. Please try again later.');
-      }
-    }
+    //   if (error.response && error.response.status === 401){
+    //     Alert.alert('Error', 'Invalid email/username or password');
+    //   } else if(error.response && error.response.status === 500){
+    //     Alert.alert('Error', 'Server error. Please try again later.');
+    //   } else {
+    //     Alert.alert('Error', 'Something went wrong. Please try again later.');
+    //   }
+    // }
   };
 
   return (
@@ -88,7 +88,7 @@ const SignInScreen = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
-      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
         <Text style={styles.buttonText}>Sign in</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')} >

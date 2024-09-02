@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Alert, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 const API_BASE_URL = 'http://192.168.100.42:5000';
@@ -93,7 +93,7 @@ const UserManagement = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>User Management</Text>
 
       <FlatList
@@ -151,7 +151,7 @@ const UserManagement = () => {
           <Text style={styles.submitButtonText}>{isEditing ? 'Update User' : 'Create User'}</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 8,
     marginTop: 20,
+    marginBottom: 20,
   },
   input: {
     borderWidth: 1,
@@ -210,9 +211,11 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 5,
     marginBottom: 10,
+    overflow: 'hidden',
   },
   picker: {
     height: 50,
+    width: '100%',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -226,6 +229,7 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: '#4CAF50',
     padding: 15,
+    marginTop: 10,
   },
   submitButtonText: {
     color: 'white',
