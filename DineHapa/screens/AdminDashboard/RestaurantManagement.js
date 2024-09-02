@@ -30,6 +30,7 @@ const RestaurantManagement = () => {
       console.error('Error fetching categories:', error);
     }
   };
+  
 
   const handleApproval = async (restaurantId, status) => {
     try {
