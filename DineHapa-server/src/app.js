@@ -6,6 +6,7 @@ const restaurantRoutes = require('./routes/restaurantRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const menuRoutes = require('./routes/menuRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -31,7 +32,10 @@ app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/orders', orderRoutes);
 // Menu routes
 app.use('/api/menus', menuRoutes);
+// review routes
+app.use('/api/reviews', reviewRoutes);
 // Admin routes
 app.use('/api/admin', adminRoutes);
+
 
 module.exports = app;

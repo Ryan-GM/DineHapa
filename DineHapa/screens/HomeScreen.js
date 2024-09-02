@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, Modal, SafeAreaView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const categories = ['All', 'Sandwich', 'Pizza', 'Burgers', 'Chinese', 'Mexican', 'Italian'];
+const categories = ['All', 'Sandwich', 'Pizza', 'Burgers', 'Chinese',  'Italian'];
 const cuisines = ['All', 'American', 'Mexican', 'Italian', 'Chinese'];
 const priceRanges = ['All', '$', '$$', '$$$', '$$$$'];
 
 const RestaurantCard = ({ restaurant, navigation }) => (
-  
   <TouchableOpacity 
     style={styles.card} 
     onPress={() => navigation.navigate('RestaurantDetailScreen', { restaurantId: restaurant._id })}
@@ -41,7 +40,11 @@ const HomeScreen = () => {
 
   const fetchRestaurants = async () => {
     try {
-      const response = await fetch('http://192.168.15.42:5000/api/restaurants');
+      console.log('Fetching restaurants...');
+      const response = await fetch('http://192.168.100.2:5000/api/restaurants');
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
       const result = await response.json();
       console.log('Fetched result:', result); // Log the entire result object
       if (result.status === 'success' && Array.isArray(result.data.restaurants)) {
@@ -50,6 +53,7 @@ const HomeScreen = () => {
         Alert.alert('Error', 'Data format is incorrect.');
       }
     } catch (error) {
+      console.error('Error fetching restaurants:', error);
       Alert.alert('Error', 'Something went wrong. Please try again later.');
     }
   };
@@ -68,7 +72,7 @@ const HomeScreen = () => {
 
     // Category filter
     if (selectedCategory !== 'All') {
-      filtered = filtered.filter(restaurant => restaurant.category === selectedCategory);
+      filtered = filtered.filter(restaurant => restaurant.tags.includes(selectedCategory));
     }
 
     // Cuisine filter
@@ -109,10 +113,6 @@ const HomeScreen = () => {
     setModalVisible(false);
   };
 
-
- 
-
-  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -264,114 +264,115 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     padding: 10,
-    margin: 10,
-    backgroundColor: '#fff',
+    margin: 5,
     borderRadius: 10,
+    backgroundColor: '#fff',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.5,
   },
   restaurantImage: {
     width: 50,
     height: 50,
-    borderRadius: 5,
-    marginRight: 10,
+    borderRadius: 25,
   },
   cardContent: {
+    marginLeft: 10,
     flex: 1,
   },
   restaurantName: {
     fontSize: 16,
     fontWeight: 'bold',
   },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 20,
-    marginLeft: 10,
-  },
   categoryContainer: {
+    marginVertical: 10,
     flexDirection: 'row',
-    paddingLeft: 10,
   },
   categoryItem: {
     padding: 10,
-    marginRight: 10,
+    margin: 5,
+    borderRadius: 5,
     backgroundColor: '#fff',
-    borderRadius: 20,
     borderWidth: 1,
     borderColor: '#ddd',
   },
   selectedCategory: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ddd',
   },
   categoryText: {
-    color: '#555',
+    fontSize: 14,
+    color: '#333',
   },
   selectedCategoryText: {
-    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    margin: 15,
   },
   noDataText: {
     textAlign: 'center',
-    color: '#888',
-    marginTop: 20,
+    margin: 20,
+    fontSize: 16,
+    color: '#999',
   },
   ctaButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#f8f8f8',
     padding: 15,
+    margin: 15,
     borderRadius: 10,
     alignItems: 'center',
-    margin: 20,
+    borderWidth: 1,
+    borderColor: '#ddd',
   },
   ctaButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
     fontSize: 16,
+    color: '#333',
   },
   modalView: {
-    marginTop: 'auto',
-    backgroundColor: '#fff',
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 5,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,
+    color: '#fff',
   },
   modalOption: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    padding: 10,
+    margin: 5,
+    borderRadius: 5,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    width: 200,
+    alignItems: 'center',
   },
   selectedModalOption: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ddd',
   },
   modalOptionText: {
     fontSize: 16,
   },
   selectedModalOptionText: {
-    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   closeButton: {
-    marginTop: 15,
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: '#007AFF',
-    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    marginTop: 20,
   },
   closeButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
     fontSize: 16,
+    color: '#333',
   },
 });
 
