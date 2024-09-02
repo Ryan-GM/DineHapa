@@ -18,6 +18,8 @@ router.put("/:id", RestaurantController.updateRestaurant);
 router.delete("/:id", RestaurantController.deleteRestaurant);
 router.delete("/", RestaurantController.deleteAllRestaurants);
 
+router.delete("/", RestaurantController.deleteAllRestaurants);
+
 // // Route to get nearby restaurants
 // router.get("/nearby/:latitude/:longitude", RestaurantController.getNearbyRestaurants);
 

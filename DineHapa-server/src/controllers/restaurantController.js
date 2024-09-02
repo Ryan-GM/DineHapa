@@ -170,6 +170,29 @@ exports.deleteAllRestaurants = async (req, res) => {
 }
 };
 
+// Controller function to delete all restaurants
+exports.deleteAllRestaurants = async (req, res) => {
+    try {
+        // Delete all restaurant documents
+        const result = await Restaurant.deleteMany({});
+
+        // Send response with status 200 and count of deleted restaurants
+        res.status(200).json({
+            status: "success",
+            data: {
+                deletedCount: result.deletedCount, // Number of documents deleted
+            },
+        });
+    } catch (err) {
+        // Handle errors, sending a response with status 500
+        res.status(500).json({
+            status: "error",
+            message: "Failed to delete all restaurants", 
+            error: err.message, 
+        });
+    }
+};
+
 // Fetch nearby restaurants based on location
 // exports.getNearbyRestaurants = async (req, res) => {
 //     try {

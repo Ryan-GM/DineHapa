@@ -64,9 +64,9 @@ const HomeScreen = () => {
     // Search query filter
     if (searchQuery) {
       filtered = filtered.filter(restaurant => 
-        restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        restaurant.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        restaurant.cuisine.toLowerCase().includes(searchQuery.toLowerCase())
+        restaurant.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        restaurant.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        restaurant.cuisine?.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
