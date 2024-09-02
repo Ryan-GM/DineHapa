@@ -7,6 +7,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const menuRoutes = require('./routes/menuRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const TokenRoute = require('./routes/tokenRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -36,6 +37,7 @@ app.use('/api/menus', menuRoutes);
 app.use('/api/reviews', reviewRoutes);
 // Admin routes
 app.use('/api/admin', adminRoutes);
+app.use("/token", TokenRoute);
 
 
 module.exports = app;
