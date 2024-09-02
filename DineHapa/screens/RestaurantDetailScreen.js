@@ -10,7 +10,7 @@ const RestaurantDetailScreen = ({ route }) => {
   useEffect(() => {
     const fetchRestaurantDetails = async () => {
       try {
-        const response = await fetch(`http://192.168.15.42:5000/api/restaurants/${restaurantId}`);
+        const response = await fetch(`http://192.168.100.86:5000/api/restaurants/${restaurantId}`);
         const result = await response.json();
         if (result.status === 'success') {
           setRestaurant(result.data.restaurant);

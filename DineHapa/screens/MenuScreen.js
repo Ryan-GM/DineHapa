@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, SafeAreaView, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, SafeAreaView, TouchableOpacity, Image, Alert } from 'react-native';
 import { useRoute,useNavigation } from '@react-navigation/native';
 
 const MenuScreen = () => {
@@ -7,13 +7,29 @@ const MenuScreen = () => {
   const { selectedCategory, restaurant } = route.params;
 
   const navigation = useNavigation(); 
+  const [cart, setCart] = useState([]);
 
   // Find the restaurant's menu items for the selected category
   const menuCategory = restaurant.menuItems.find(item => item.category === selectedCategory);
 
   const handleAddToCart = (item) => {
     // Add to cart logic here
+    setCart(prevCart => [...prevCart, { ...item, quantity: 1 }]);
     console.log(`${item.name} added to cart.`);
+
+    Alert.alert(
+      'Added to cart', `${item.name} added to cart.`,
+      [{
+        text: 'OK', onPress: () => navigation.navigate('CartScreen', { cart }),
+        style: "default"
+      },
+      {
+        text: "Continue",
+        onPress: () => navigation.navigate('MenuScreen', { selectedCategory: selectedCategory, restaurant: restaurant }),
+        style: "cancel"
+      }
+    ]
+    );
   };
 
   return (

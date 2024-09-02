@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation, useRoute } from '@react-navigation/native'; // Import useNavigation hook
+
 
 // CartItem Component: Represents a single item in the cart
 // Props: 
@@ -38,9 +39,11 @@ const CartItem = ({ item, onUpdateQuantity }) => {
 // CartScreen Component: Displays the user's shopping cart with items, promo code input, and checkout option
 const CartScreen = () => {
   const navigation = useNavigation(); // Use the useNavigation hook
+  const route = useRoute();
+  const { cart } = route.params;
 
   // State: Array of cart items
-  const [cartItems, setCartItems] = useState([
+  const [cartItems, setCartItems] = useState(cart || [
     { id: '1', name: 'Prime Beef - Pizza Beautiful', quantity: 2, price: 20.99, image: 'https://example.com/pizza.jpg' },
     { id: '2', name: 'Double BBQ bacon cheese burger', quantity: 2, price: 15.99, image: 'https://example.com/burger.jpg' },
   ]);

@@ -14,7 +14,7 @@ const SignUpScreen = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://192.168.15.42:5000/api/users/register', {
+      const response = await fetch('http://192.168.100.86:5000/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

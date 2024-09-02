@@ -28,7 +28,7 @@ const SignInScreen = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://192.168.15.42:5000/api/users/login', {
+      const response = await fetch('http://192.168.100.86:5000/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ const SignInScreen = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
-      <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('HomeScreen')}>
+      <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('LocationScreen')}>
         <Text style={styles.buttonText}>Sign in</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')} >

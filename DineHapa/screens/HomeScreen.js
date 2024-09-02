@@ -41,7 +41,7 @@ const HomeScreen = () => {
 
   const fetchRestaurants = async () => {
     try {
-      const response = await fetch('http://192.168.15.42:5000/api/restaurants');
+      const response = await fetch('http://192.168.100.86:5000/api/restaurants');
       const result = await response.json();
       console.log('Fetched result:', result); // Log the entire result object
       if (result.status === 'success' && Array.isArray(result.data.restaurants)) {
@@ -59,9 +59,9 @@ const HomeScreen = () => {
 
     if (searchQuery) {
       filtered = filtered.filter(restaurant => 
-        restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        restaurant.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        restaurant.cuisine.toLowerCase().includes(searchQuery.toLowerCase())
+        restaurant.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        restaurant.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        restaurant.cuisine?.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
