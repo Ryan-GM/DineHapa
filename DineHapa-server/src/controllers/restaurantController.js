@@ -148,37 +148,60 @@ exports.deleteRestaurant = async (req, res) => {
     }
 };
 
-// Fetch nearby restaurants based on location
-exports.getNearbyRestaurants = async (req, res) => {
+// Controller function to delete all restaurants
+exports.deleteAllRestaurants = async (req, res) => {
     try {
-        const { latitude, longitude } = req.params; // Extract latitude and longitude from request parameters
-        
-        // Find nearby restaurants using geospatial query
-        const nearbyRestaurants = await Restaurant.find({
-            location: {
-                $near: {
-                    $geometry: {
-                        type: "Point",
-                        coordinates: [parseFloat(longitude), parseFloat(latitude)], // Ensure coordinates are numbers
-                    },
-                },
-            },
-        });
-        
-        // Send response with status 200 and the list of nearby restaurants
+        // Delete all restaurant documents
+        const result = await Restaurant.deleteMany({});
+
+        // Send response with status 200 and count of deleted restaurants
         res.status(200).json({
             status: "success",
-            results: nearbyRestaurants.length, // Number of nearby restaurants found
             data: {
-                restaurants: nearbyRestaurants, // List of nearby restaurants
+                deletedCount: result.deletedCount, // Number of documents deleted
             },
         });
     } catch (err) {
         // Handle errors, sending a response with status 500
         res.status(500).json({
             status: "error",
-            message: "Failed to retrieve nearby restaurants", 
+            message: "Failed to delete all restaurants", 
             error: err.message, 
         });
     }
 };
+
+// Fetch nearby restaurants based on location
+// exports.getNearbyRestaurants = async (req, res) => {
+//     try {
+//         const { latitude, longitude } = req.params; // Extract latitude and longitude from request parameters
+        
+//         // Find nearby restaurants using geospatial query
+//         const nearbyRestaurants = await Restaurant.find({
+//             location: {
+//                 $near: {
+//                     $geometry: {
+//                         type: "Point",
+//                         coordinates: [parseFloat(longitude), parseFloat(latitude)], // Ensure coordinates are numbers
+//                     },
+//                 },
+//             },
+//         });
+        
+//         // Send response with status 200 and the list of nearby restaurants
+//         res.status(200).json({
+//             status: "success",
+//             results: nearbyRestaurants.length, // Number of nearby restaurants found
+//             data: {
+//                 restaurants: nearbyRestaurants, // List of nearby restaurants
+//             },
+//         });
+//     } catch (err) {
+//         // Handle errors, sending a response with status 500
+//         res.status(500).json({
+//             status: "error",
+//             message: "Failed to retrieve nearby restaurants", 
+//             error: err.message, 
+//         });
+//     }
+// };

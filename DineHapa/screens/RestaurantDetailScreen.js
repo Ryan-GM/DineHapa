@@ -1,28 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const RestaurantDetailScreen = ({ route }) => {
   const navigation = useNavigation();
-  const { restaurantId, allRestaurants } = route.params;
-  const restaurant = allRestaurants.find(r => r.id === restaurantId);
+  const [restaurant, setRestaurant] = useState(null);
+  const { restaurantId, allRestaurants = [] } = route.params;  // Use an empty array as a fallback
+
+  useEffect(() => {
+    const fetchRestaurantDetails = async () => {
+      try {
+        const response = await fetch(`http://192.168.15.42:5000/api/restaurants/${restaurantId}`);
+        const result = await response.json();
+        if (result.status === 'success') {
+          setRestaurant(result.data.restaurant);
+        } else {
+          throw new Error('Failed to fetch restaurant details');
+        }
+      } catch (error) {
+        console.error('Error fetching restaurant:', error);
+        setRestaurant(null); // or set an error state
+      }
+    };
+  
+    fetchRestaurantDetails();
+  }, [restaurantId]);
+  
 
   if (!restaurant) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text>Restaurant not found</Text>
+        <Text>Loading...</Text>
       </SafeAreaView>
     );
   }
 
   const handleCategorySelect = (category) => {
-    navigation.navigate('MenuScreen', { 
-      selectedCategory: category, 
-      restaurantId: restaurantId, 
-      allRestaurants: allRestaurants 
+    navigation.navigate('MenuScreen', {
+      selectedCategory: category,
+      restaurant: restaurant, // Pass the full restaurant object
+      allRestaurants: allRestaurants
     });
   };
-  
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,7 +70,7 @@ const RestaurantDetailScreen = ({ route }) => {
           showsHorizontalScrollIndicator={false}
           data={['Appetizers', 'Main Courses', 'Desserts', 'Drinks']}
           renderItem={({ item }) => (
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.categoryItem}
               onPress={() => handleCategorySelect(item)}
             >
@@ -60,7 +80,6 @@ const RestaurantDetailScreen = ({ route }) => {
           keyExtractor={(item) => item}
           contentContainerStyle={styles.categoryContainer}
         />
-
 
         {/* Dish Details */}
         <Text style={styles.sectionTitle}>Popular Dishes</Text>
@@ -97,7 +116,6 @@ const RestaurantDetailScreen = ({ route }) => {
     </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {

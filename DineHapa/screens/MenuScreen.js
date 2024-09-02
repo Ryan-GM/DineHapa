@@ -1,48 +1,55 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { View, Text, FlatList, StyleSheet, SafeAreaView, TouchableOpacity, Image } from 'react-native';
+import { useRoute,useNavigation } from '@react-navigation/native';
 
 const MenuScreen = () => {
   const route = useRoute();
-  const { restaurantId, selectedCategory, allRestaurants } = route.params;
+  const { selectedCategory, restaurant } = route.params;
 
-  // Find the restaurant
-  const restaurant = allRestaurants.find(r => r.id === restaurantId);
+  const navigation = useNavigation(); 
 
-  if (!restaurant) {
-    return <Text style={styles.errorText}>Restaurant not found</Text>;
-  }
+  // Find the restaurant's menu items for the selected category
+  const menuCategory = restaurant.menuItems.find(item => item.category === selectedCategory);
 
-  // Check if menu exists and is not empty
-  if (!restaurant.menu || restaurant.menu.length === 0) {
-    return <Text style={styles.errorText}>Menu not available</Text>;
-  }
-
-  // Find the menu section
-  const menuSection = restaurant.menu.find(section => section.category === selectedCategory);
-
-  if (!menuSection) {
-    return <Text style={styles.errorText}>Category not found</Text>;
-  }
+  const handleAddToCart = (item) => {
+    // Add to cart logic here
+    console.log(`${item.name} added to cart.`);
+  };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>{selectedCategory}</Text>
-      <FlatList
-        data={menuSection.items}
-        renderItem={({ item }) => (
-          <View style={styles.menuItem}>
-            {item.image && <Image source={{ uri: item.image }} style={styles.menuItemImage} />}
-            <View style={styles.menuItemDetails}>
-              <Text style={styles.menuItemName}>{item.name}</Text>
-              <Text style={styles.menuItemDescription}>{item.description}</Text>
-              <Text style={styles.menuItemPrice}>{item.price}</Text>
+      {menuCategory ? (
+        <FlatList
+          data={menuCategory.items}
+          renderItem={({ item }) => (
+            <View style={styles.menuItem}>
+              <Image source={{ uri: item.image || 'https://via.placeholder.com/100' }} style={styles.menuItemImage} />
+              <View style={styles.menuItemDetails}>
+                <Text style={styles.itemName}>{item.name}</Text>
+                <Text style={styles.itemDescription}>{item.description}</Text>
+                <Text style={styles.itemPrice}>${item.price.toFixed(2)}</Text>
+                <TouchableOpacity
+                  style={styles.addButton}
+                  onPress={() => handleAddToCart(item)}
+                >
+                  <Text style={styles.addButtonText}>+</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-        keyExtractor={(item) => item.id.toString()}
-      />
-    </View>
+          )}
+          keyExtractor={(item) => item.name}
+        />
+      ) : (
+        <Text style={styles.noItemsText}>No items available in this category.</Text>
+      )}
+      <TouchableOpacity
+        style={styles.cartButton}
+        onPress={() => navigation.navigate('CartScreen', { restaurant: restaurant })}
+      >
+        <Text style={styles.cartButtonText}>Go to Cart</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 
@@ -50,55 +57,80 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: '#f5f5f5',
-    marginTop: 20,
+    backgroundColor: '#f8f8f8',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
     color: '#333',
+    marginBottom: 10,
   },
   menuItem: {
     flexDirection: 'row',
-    padding: 10,
     backgroundColor: '#fff',
-    borderRadius: 8,
+    borderRadius: 10,
     marginBottom: 15,
+    padding: 10,
     elevation: 2,
   },
   menuItemImage: {
     width: 80,
     height: 80,
-    borderRadius: 8,
+    borderRadius: 10,
     marginRight: 10,
   },
   menuItemDetails: {
     flex: 1,
     justifyContent: 'center',
   },
-  menuItemName: {
+  itemName: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
   },
-  menuItemDescription: {
-    fontSize: 14,
+  itemDescription: {
+    fontSize: 16,
     color: '#666',
-    marginVertical: 5,
   },
-  menuItemPrice: {
+  itemPrice: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#e91e63',
+    marginTop: 5,
   },
-  errorText: {
-    flex: 1,
+  addButton: {
+    marginTop: 10,
+    backgroundColor: '#007AFF',
+    borderRadius: 20,
+    width: 40,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  addButtonText: {
+    color: '#fff',
+    fontSize: 24,
+  },
+  cartButton: {
+    backgroundColor: '#007AFF',
+    padding: 15,
+    borderRadius: 10,
+    margin: 15,
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  },
+  cartButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  noItemsText: {
     textAlign: 'center',
-    fontSize: 18,
-    color: '#e91e63',
+    fontSize: 16,
+    color: '#666',
+    marginTop: 20,
   },
 });
 
